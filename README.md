@@ -1,1 +1,1 @@
-# AIGLE-M1-S1
+Repository GitHub du premier semestre du Master 1 Aigle (Génie Logiciel)
