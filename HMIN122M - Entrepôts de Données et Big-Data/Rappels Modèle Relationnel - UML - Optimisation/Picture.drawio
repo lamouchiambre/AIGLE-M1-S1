@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-09-12T08:39:26.248Z" agent="5.0 (Windows)" etag="KnkLZgbPu4l-R_N8Ugml" version="13.6.10" type="github">
+<mxfile host="app.diagrams.net" modified="2020-09-12T12:55:20.943Z" agent="5.0 (Windows)" etag="ka5Nhifr9hiepaFnsJL3" version="13.6.10" type="github">
   <diagram id="JUZ-aZVldM-WZ8tEQ8vl" name="Page-1">
     <mxGraphModel dx="1038" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
       <root>
@@ -162,7 +162,7 @@
         <mxCell id="IGt4OMnL4JDCSkMc5yp7-2" value="ID" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" vertex="1" parent="FA4hYa32smkLxe0XhBhG-42">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="cZ3DA8C6cK84-C7tu1Da-3" value="&lt;&lt;enumeration&gt;&gt;&#xa;Publishing License" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+        <mxCell id="cZ3DA8C6cK84-C7tu1Da-3" value="&lt;&lt;enumeration&gt;&gt;&#xa;Publishing_License" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
           <mxGeometry x="590" y="221" width="220" height="104" as="geometry" />
         </mxCell>
         <mxCell id="cZ3DA8C6cK84-C7tu1Da-5" value="All_rights_reserved" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="cZ3DA8C6cK84-C7tu1Da-3" vertex="1">
