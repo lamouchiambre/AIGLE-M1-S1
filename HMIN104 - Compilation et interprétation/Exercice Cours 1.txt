@@ -26,7 +26,13 @@ write(f(n))
 var n : integer
 
 f(n : integer) : interger
-	
+	if n = 0 then
+		f := 1
+	else
+		f := n * f(n-1)
+
+n := read();
+write(f(n))
 --- Fin
 
 3. Écrire un programme qui alloue un tableau d’entiers d’une taille
