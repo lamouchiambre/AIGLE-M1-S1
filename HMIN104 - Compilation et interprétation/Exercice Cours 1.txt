@@ -39,7 +39,11 @@ write(f(n))
 demandée à l’utilisateur, et appelle une procédure pour l’initialiser ;
 
 --- Début
+var n : integer
 
+
+
+n := read();
 --- Fin
 
 4. Écrire une fonction qui teste si tous les éléments d’un tableau d’entiers
