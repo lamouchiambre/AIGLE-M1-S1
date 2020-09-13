@@ -57,5 +57,11 @@ f(n)
 passé en paramètre sont positifs.
 
 --- Début
-
+f(tab : array of integer, n : integer) : boolean
+var i : integer
+f := true;
+i := 0;
+while i < n and result do
+if tab[i] < 0 then
+f := false
 --- Fin
