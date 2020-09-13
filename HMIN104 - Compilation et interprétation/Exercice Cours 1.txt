@@ -40,10 +40,17 @@ demandée à l’utilisateur, et appelle une procédure pour l’initialiser ;
 
 --- Début
 var n : integer
+var tab : array of integer
 
-
+f(n : integer)
+var i : integer
+i := 0;
+while i < n do
+tab[i] := 0;
+i := i + 1
 
 n := read();
+f(n)
 --- Fin
 
 4. Écrire une fonction qui teste si tous les éléments d’un tableau d’entiers
