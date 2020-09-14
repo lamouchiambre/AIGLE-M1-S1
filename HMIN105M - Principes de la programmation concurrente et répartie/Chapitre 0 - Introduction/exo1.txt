@@ -4,7 +4,7 @@ int* p = &b;
 int* pp = &a;
 
 1. *(&(*(*(&p))))
-- l'adresse de b
+- l'adresse de b (correction : valeuur de b)
 
 2. *(p-1)
 - la valeur de a
