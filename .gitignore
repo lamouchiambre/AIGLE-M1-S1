@@ -1,2 +1,7 @@
 
 *.mp4
+*.opendb
+*.db-wal
+*.db-shm
+*.db
+*.db
