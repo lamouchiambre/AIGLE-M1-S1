@@ -43,11 +43,11 @@ var n : integer
 var tab : array of integer
 
 f(n : integer)
-var i : integer
-i := 0;
-while i < n do
-tab[i] := 0;
-i := i + 1
+	var i : integer
+	i := 0;
+	while i < n do
+		tab[i] := 0;
+		i := i + 1
 
 n := read();
 f(n)
@@ -58,10 +58,13 @@ passé en paramètre sont positifs.
 
 --- Début
 f(tab : array of integer, n : integer) : boolean
-var i : integer
-f := true;
-i := 0;
-while i < n and result do
-if tab[i] < 0 then
-f := false
+	var i : integer
+	f := true;
+	i := 0;
+	while i < n and result do
+		if tab[i] < 0 then
+			f := false
+		else
+			skip
+		i := i + 1
 --- Fin
