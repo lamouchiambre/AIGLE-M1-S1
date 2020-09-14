@@ -25,5 +25,5 @@ int main() {
   // 6. -858993460 adresse de a
   cout << *(&(*(*(&p))) - 1);
 
-  // test
+  // test2
 }
