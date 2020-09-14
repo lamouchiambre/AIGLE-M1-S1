@@ -1,0 +1,22 @@
+int a = 10;
+int b = 25;
+int* p = &b;
+int* pp = &a;
+
+1. *(&(*(*(&p))))
+- l'adresse de b (correction : valeuur de b)
+
+2. *(p-1)
+- la valeur de a (correction : adresse de a)
+
+3. *(*(&p)-1)
+- la valeur de a (correction : adresse de a)
+
+4. *(*(&pp)+1)
+- l'adresse de b (correction : adresse de a)
+
+5. *(&(*(*(&p)))-1)
+- la valeur de a (correction : adresse de a)
+
+6. *(&(*(*(&p)))-1)
+- la valeur de a (correction : adresse de a)
