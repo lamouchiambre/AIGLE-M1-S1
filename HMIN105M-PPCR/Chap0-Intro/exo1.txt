@@ -17,6 +17,3 @@ int* pp = &a;
 
 5. *(&(*(*(&p)))-1)
 - la valeur de a (correction : adresse de a)
-
-6. *(&(*(*(&p)))-1)
-- la valeur de a (correction : adresse de a)
