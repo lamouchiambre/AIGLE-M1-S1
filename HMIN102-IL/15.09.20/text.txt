@@ -1,0 +1,30 @@
+Ce jeudi à 11h30 à priori en SC 12.01
+
+classe abstraite "AbstractDico" :
++ tabKeys
++ tabValues
++ get(...){}
++ put(...){}
++ isEmpty(...){}
++ containsKey(...){}
+- abstract indexOf(Object key)
+
+Classe "OrderedDico" : (fille de AbstractDico)
+taille optimisée
+temps d'accès variable
+- Object indexOf(Object key)
+
+Classe "FastDico" : (fille de AbstractDico)
+temps d'accès constant
+taille plus importante (3/4 plein)
+- Object indexOf(Onject key)
+
+Interface "IDico" : (défini l'interface utilisateur pour les clients)
+- Object get(Object key)
+- void put(__,__)
+- 
+
+Client :
+AbstractDico d = new OrderedDico();
+d.put("Lavoisier", "Chimiste francais ...");
+d.get("Lavoisier"); --> "Chismiste francais...");
