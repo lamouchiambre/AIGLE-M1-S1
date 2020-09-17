@@ -1,6 +1,5 @@
-import java.util.ArrayList;
 
-public class OrderedDico extends Dico {
+public class OrderedDictionary extends AbstractDictionary {
 
   protected int newIndexOf(Object key) {
     //return this.indexOf(key);
@@ -15,6 +14,6 @@ public class OrderedDico extends Dico {
   }
 
   protected void grow() {
-    ArrayList<Object> newKeys = new ArrayList<Object>();
+    //ArrayList<Object> newKeys = new ArrayList<Object>();
   }
 }
