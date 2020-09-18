@@ -1,0 +1,44 @@
+<Tweet seconds="39600" timer_zone="..." id="...">
+  <Content font_size="..." font_type="..." font_color="black" language="english">
+    <Text>
+      .
+    </Text>
+    <UserReference>
+      @example
+    </UserReference>
+    <Text>
+      absolutely smashed it at
+    </Text>
+    <Hashtag>
+      #mtvlivelockdown
+    </Hashtag>
+    <Text>
+      ! Catch him at the official
+    </Text>
+    <UserReference>
+      @clubmtvuk
+    </UserReference>
+    <Text>
+      after party tonight @ 10pm
+    </Text>
+    <Retweet>
+    </Retweet>
+    <AuthorizedReply>
+    </AuthorizedReply>
+  </Content>
+  <Author id="MTVMusicUK">
+    <Name>
+      MTV Music
+    </Name>
+    <Profil>
+      <Description>
+      </Description>
+      <UserPicture>
+      </UserPicture>
+      <Followers>
+      </Followers>
+      <Suscribers>
+      </Suscribers>
+    </Profil>
+  </Author>
+</Tweet>
