@@ -1,9 +1,11 @@
 #include <iostream>
 using namespace std;
 #include <assert.h> 
+#include <sys/types.h>
+#include <unistd.h>
 
 
-void exo1() {
+void exo1_1() {
 	int a = 10;
 	int b = 25;
 	int* p = &b;
@@ -37,35 +39,71 @@ void print(int T[], int n) {
 }
 
 int* extract(int T1[], int n, int a, int b) {
-	int count = 0;
+	int m = 0;
 	int* T2 = (int*) malloc(sizeof(int));
-	assert(T2 != NULL);
 	
-	if (a > b) {
-		a = a + b;
-		b = a - b;
-		a = a - b;
-	}
 	for (int i = 0; i < n; i++) {
 		if (T1[i] >= a && T1[i] <= b) {
-			count++;
-			T2 = (int*) realloc(T2, count * sizeof(int));
-			T2[count] = T1[i]; 
+			m++;
+			T2 = (int*) realloc(T2, m * sizeof(int));
+			T2[m-1] = T1[i]; 
 		}  	
 	} 
 
 	return T2;
 }
 
-void exo2() {
+void exo1_2() {
 	int const n = 5;
-	int T1[n] = { 1, 2, 3, 4, 5 };
+	int T1[n] = { 1, 3, 5, 7, 9 };
 	int* T2 = extract(T1, n, 2, 5);
 	print(T1, n);
 	print(T2, n);
 
 }
 
+void exo1_3() {
+	int n = 0;
+
+	cout << "Saisissez la taille du tableau : ";
+	cin >> n;
+	int tab[n];
+	for (int i = 0; i < n; i++) {
+		cout << "tab[" << i << "] = ";
+		cin >> tab[i]; 
+	}
+   
+} 
+
+void exo2(int argc, char* argv[]) {
+	pid_t id = 1;
+
+	assert(argc == 3);
+
+	cout << "-- Start: " << getpid() << " --" << endl;
+
+	for (int i = 0; i < atoi(argv[1]); i++) {
+		sleep(1);
+
+		if (id != 0) {
+			id = fork();
+		}
+
+		for (int j = 0; j < atoi(argv[2]); j++) {
+			if (id == 0) {
+				id = fork();
+			}
+		} 
+
+		sleep(1);
+		cout << " pid: " << getpid() << " ppid: " << getppid() << endl;
+		sleep(1);
+	}
+
+	cout << "-- End: " << getpid() << " --" << endl;
+	sleep(1);
+}   
+
 int main(int argc, char* argv[]) {
-	exo2();
+	exo2(argc, argv);
 }

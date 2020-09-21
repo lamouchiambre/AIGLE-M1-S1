@@ -1,5 +1,5 @@
 GPP = g++
-SRC = 
+SRC = prog.cpp
 OBJ = $(SRC:%.cpp=%.o)
 EXE = exec
 
