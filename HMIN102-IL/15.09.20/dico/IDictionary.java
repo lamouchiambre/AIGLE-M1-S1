@@ -1,4 +1,4 @@
-package tp1_2;
+package dico;
 
 public interface IDictionary {
 	int size();

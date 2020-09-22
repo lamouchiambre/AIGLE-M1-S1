@@ -3,73 +3,71 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
-// #include <iostream>
 #include <pthread.h>
 
-
 struct paramsFonctionThread {
-
-  int idThread;
-
-  // si d'autres paramètres, les ajouter ici.
-
+  int id;
+  int nb1;
+  int nb2;
 };
 
-
-void * fonctionThread (void* params){
-
-  struct paramsFonctionThread* args = (struct paramsFonctionThread *) params;
-
-  // a complêter
-  //...
-
-  printf("thread %p - début\n", params);
-  
-  printf("thread %p - fin\n", params);
-
-  pthread_exit("Fin");
+void* afficheVec(int* vec, int n) {
+  printf("[ ");
+  for (int i = 0; i < n; i++) {
+    printf("%d ", vec[i]);
+  }
+  printf("]\n");
 }
 
+void* fonctionThread(void* p) {
+  struct paramsFonctionThread* args = (struct paramsFonctionThread*) p;
 
-int main(int argc, char* argv[]){
+  int* result = malloc(sizeof(int));
+  *result = args->nb1 * args->nb2;
 
-  if (argc < 2){
-    printf("utilisation: %s  nombre_threads  \n", argv[0]);
+  pthread_exit(result);
+}
+
+int main(int argc, char* argv[]) {
+  if (argc < 2) {
+    printf("Utilisation : %s nombre_threads\n", argv[0]);
     return 1;
   }     
-
-  
   pthread_t threads[atoi(argv[1])];
+  int vec1[atoi(argv[1])];
+  int vec2[atoi(argv[1])];
 
-  //...
-
- 
-  
-  // création des threards 
-  for (int i = 0; i < atoi(argv[1]); i++){
-
-    // Le passage de paramètre est fortement conseillé (éviter les
-    // variables globles).
-    struct paramsFonctionThread p;
-    p.idThread = i;
-
-    //... // complêter pour initialiser les paramètres
-    if (pthread_create(&threads[i], NULL, fonctionThread, p.idThread) != 0){
-      perror("erreur creation thread");
-      exit(1);
-    }
-    // printf("thread %d - début\n", i);
+  for (int j = 0; j < atoi(argv[1]); j++) {
+    printf("vec1[%d] = ", j);
+    scanf("%d", &vec1[j]);
   }
 
+  for (int j = 0; j < atoi(argv[1]); j++) {
+    printf("vec2[%d] = ", j);
+    scanf("%d", &vec2[j]);
+  }
+  
+  for (int i = 0; i < atoi(argv[1]); i++) {
+    struct paramsFonctionThread* p = malloc(sizeof(struct paramsFonctionThread));
+    p->id = i;
+    p->nb1 = vec1[i];
+    p->nb2 = vec2[i];
 
-// garder cette saisie et modifier le code en temps venu.
-  char c; 
-  printf("saisir un caractère \n");
-  fgets(&c, 1, stdin);
+    if (pthread_create(&threads[i], NULL, fonctionThread, p) != 0) {
+      perror("erreur creation thread");
+      exit(1);
+    }    
+  }
+  int result_global = 0;
+  int* result = 0; 
+  for (int k = 0; k < atoi(argv[1]); k++) {
+    pthread_join(threads[k], (void**) &result);
+    result_global += *result;
+  }
+  printf("Produit carthésien : %d\n", result_global);
 
- //... complêter
+  afficheVec(vec1, atoi(argv[1]));
+  afficheVec(vec2, atoi(argv[1]));
 
   return 0;
- 
 }
- 

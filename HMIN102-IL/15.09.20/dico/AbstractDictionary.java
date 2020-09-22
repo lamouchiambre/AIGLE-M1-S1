@@ -1,4 +1,4 @@
-package tp1_2;
+package dico;
 
 import java.util.Arrays;
 

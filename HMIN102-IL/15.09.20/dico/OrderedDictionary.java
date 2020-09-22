@@ -1,4 +1,4 @@
-package tp1_2;
+package dico;
 
 //import java.util.Arrays;
 
@@ -10,7 +10,7 @@ public class OrderedDictionary extends AbstractDictionary {
 		super(0);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	protected OrderedDictionary(int n) {
 		super(n);
 		// TODO Auto-generated constructor stub
@@ -33,7 +33,7 @@ public class OrderedDictionary extends AbstractDictionary {
 		}
 		return -1;
 	}
-	
+
 	public static void main(String[] args) {
 		OrderedDictionary od = new OrderedDictionary(3);
 		//OrderedDictionary od0 = new OrderedDictionary();
