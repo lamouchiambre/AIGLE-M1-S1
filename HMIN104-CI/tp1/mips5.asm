@@ -7,13 +7,13 @@ n2: 	.word 0
 msg:	.asciiz "Rentrez un entier\n"
 
 .text
-main:	li $v0, 4
+main:	li $v0, 4 # print string
 	la $a0, msg
 	syscall # "Rentrez un entier\n"
 	
-	li $v0, 5
+	li $v0, 5 # read integer
 	syscall
-	la $a1, n1 # n1 dans a0
+	la $a1, n1 # n1 dans a1
 	
 	li $v0, 4
 	la $a0, msg
@@ -21,8 +21,8 @@ main:	li $v0, 4
 	
 	li $v0, 5
 	syscall
-	la $a2, n2 # n2 dans a1
-	j swap
+	la $a2, n2 # n2 dans a2
+	jal swap
 #	li $v0, 1
 #	la $a0, n1
 #	syscall
