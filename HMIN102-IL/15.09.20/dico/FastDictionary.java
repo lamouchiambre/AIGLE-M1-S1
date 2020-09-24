@@ -1,6 +1,6 @@
 package dico;
 
-import java.lang.*;
+//import java.lang.*;
 
 public class FastDictionary extends AbstractDictionary{
 

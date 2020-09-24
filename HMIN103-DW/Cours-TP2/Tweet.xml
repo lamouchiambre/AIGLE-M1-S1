@@ -1,44 +1,29 @@
-<Tweet seconds="39600" timer_zone="..." id="...">
-  <Content font_size="..." font_type="..." font_color="black" language="english">
-    <Text>
-      .
-    </Text>
-    <UserReference>
-      @example
-    </UserReference>
-    <Text>
-      absolutely smashed it at
-    </Text>
-    <Hashtag>
-      #mtvlivelockdown
-    </Hashtag>
-    <Text>
-      ! Catch him at the official
-    </Text>
-    <UserReference>
-      @clubmtvuk
-    </UserReference>
-    <Text>
-      after party tonight @ 10pm
-    </Text>
-    <Retweet>
-    </Retweet>
-    <AuthorizedReply>
-    </AuthorizedReply>
-  </Content>
+<Tweet id="..." seconds="39600" timer_zone="..." >
   <Author id="MTVMusicUK">
-    <Name>
-      MTV Music
-    </Name>
-    <Profil>
-      <Description>
-      </Description>
-      <UserPicture>
-      </UserPicture>
-      <Followers>
-      </Followers>
-      <Suscribers>
-      </Suscribers>
+    <Name>MTV Music</Name>
+    <Profil url="">
+      <Description></Description>
+      <UserPicture></UserPicture>
+      <Followers></Followers>
+      <Suscribers></Suscribers>
     </Profil>
   </Author>
+  <Coord>
+  	<Longitude></Longitude>
+  	<Latitude></Latitude>
+  </Coord>
+  <City></City>
+  <Country></Country>
+  <OS></OS>
+  <Content id ="..." id_ref_tweet="..." id_ref_author="..." font_size="..." font_type="..." font_color="black" language="english">
+    <Text>.</Text>
+    <UserReference>@example</UserReference>
+    <Text>absolutely smashed it at</Text>
+    <Hashtag>#mtvlivelockdown</Hashtag>
+    <Text>! Catch him at the official</Text>
+    <UserReference>@clubmtvuk</UserReference>
+    <Text>after party tonight @ 10pm</Text>
+    <Retweets></Retweets>
+    <AuthorizedReply></AuthorizedReply>
+  </Content>
 </Tweet>
