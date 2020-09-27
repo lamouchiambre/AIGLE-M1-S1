@@ -64,8 +64,8 @@ public abstract class AbstractDictionary implements IDictionary {
 		}
 	}
 	protected void grow() {
-		Object[] newKeys = Arrays.copyOf(this.getKeys(), this.size() + 1);
-		Object[] newValues = Arrays.copyOf(this.getValues(), this.size() + 1);
+		Object[] newKeys = Arrays.copyOf(this.getKeys(), this.getKeys().length + 1);
+		Object[] newValues = Arrays.copyOf(this.getValues(), this.getKeys().length + 1);
 		this.setKeys(newKeys);
 		this.setValues(newValues); 	
 	}
