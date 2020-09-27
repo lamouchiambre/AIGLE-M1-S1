@@ -19,13 +19,14 @@ void* afficheVec(int* vec, int n) {
   printf("]\n");
 }
 
+// Renvoie le résultat de la multiplication
 void* fonctionThread(void* p) {
   struct paramsFonctionThread* args = (struct paramsFonctionThread*) p;
 
-  int* result = malloc(sizeof(int));
-  *result = args->nb1 * args->nb2;
+  int* thread_result = malloc(sizeof(int));
+  *thread_result = args->nb1 * args->nb2;
 
-  pthread_exit(result);
+  pthread_exit(thread_result);
 }
 
 int main(int argc, char* argv[]) {
@@ -36,17 +37,20 @@ int main(int argc, char* argv[]) {
   pthread_t threads[atoi(argv[1])];
   int vec1[atoi(argv[1])];
   int vec2[atoi(argv[1])];
+  int produit_scalaire = 0;
+  int* thread_result = NULL; 
 
-  for (int j = 0; j < atoi(argv[1]); j++) {
-    printf("vec1[%d] = ", j);
-    scanf("%d", &vec1[j]);
+  // Remplissage des deux tableaux
+  for (int i = 0; i < atoi(argv[1]); i++) {
+    printf("vec1[%d] = ", i);
+    scanf("%d", &vec1[i]);
   }
-
-  for (int j = 0; j < atoi(argv[1]); j++) {
-    printf("vec2[%d] = ", j);
-    scanf("%d", &vec2[j]);
+  for (int i = 0; i < atoi(argv[1]); i++) {
+    printf("vec2[%d] = ", i);
+    scanf("%d", &vec2[i]);
   }
   
+  // Paramètres et threads
   for (int i = 0; i < atoi(argv[1]); i++) {
     struct paramsFonctionThread* p = malloc(sizeof(struct paramsFonctionThread));
     p->id = i;
@@ -58,13 +62,13 @@ int main(int argc, char* argv[]) {
       exit(1);
     }    
   }
-  int result_global = 0;
-  int* result = 0; 
+
+  // Join et somme des résultats de chaque thread
   for (int k = 0; k < atoi(argv[1]); k++) {
-    pthread_join(threads[k], (void**) &result);
-    result_global += *result;
+    pthread_join(threads[k], (void**) &thread_result);
+    produit_scalaire += *thread_result;
   }
-  printf("Produit carthésien : %d\n", result_global);
+  printf("Produit carthésien : %d\n", produit_scalaire);
 
   afficheVec(vec1, atoi(argv[1]));
   afficheVec(vec2, atoi(argv[1]));
