@@ -1,5 +1,5 @@
 GPP = gcc
-SRC = rendez-vous.c
+SRC = traitement_synchro.c
 OBJ = $(SRC:%.c=%.o) calculC.o
 EXE = exec
 
