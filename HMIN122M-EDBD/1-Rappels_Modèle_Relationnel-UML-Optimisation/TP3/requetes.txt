@@ -9,3 +9,44 @@ SELECT /* USE_NL(Ville Departement) */ ville.nom, departement.nom FROM Ville, De
 
 Q10 :
 SELECT ville.nom, departement.nom, region.nom FROM Ville, Departement, Region WHERE ville.dep = departement.id AND departement.reg = region.id;
+
+
+Plan d'execution
+----------------------------------------------------------
+Plan hash value: 2367375942
+--------------------------------------------------------------------------------
+| Id  | Operation		      | Name	      | Rows  | Bytes |TempSpc|Cost (%CPU)| Time     |
+--------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT	      | 	      | 31902 |  4361K|       |998	(1)| 00:00:01 |
+|   1 |  HASH UNIQUE		      | 	      | 31902 |  4361K|  4656K|998	(1)| 00:00:01 |
+|   2 |   NESTED LOOPS		      | 	      | 31902 |  4361K|       |    6	(0)| 00:00:01 |
+|   3 |    NESTED LOOPS 	      | 	      | 62608 |  4361K|       |    6	(0)| 00:00:01 |
+|*  4 |     HASH JOIN		      | 	      |   104 |  8736 |       |    6	(0)| 00:00:01 |
+|   5 |      TABLE ACCESS FULL	      | REGION	      |    27 |  1080 |       |    3 (0)| 00:00:01 |
+|   6 |      TABLE ACCESS FULL	      | DEPARTEMENT   |   104 |  4576 |       |    3	(0)| 00:00:01 |
+|*  7 |     INDEX RANGE SCAN	      | IDX_DEP_VILLE |   602 |       |       |    0	(0)| 00:00:01 |
+|   8 |    TABLE ACCESS BY INDEX ROWID| VILLE	      |   307 | 17192 |       |    0	(0)| 00:00:01 |
+--------------------------------------------------------------------------------
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   4 - access("DEPARTEMENT"."REG"="REGION"."ID")
+   7 - access("VILLE"."DEP"="DEPARTEMENT"."ID")
+
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+Statistiques
+----------------------------------------------------------
+	  4  recursive calls
+	  0  db block gets
+	507  consistent gets
+	  0  physical reads
+	  0  redo size
+1125861  bytes sent via SQL*Net to client
+27306  bytes received via SQL*Net from client
+       2441  SQL*Net roundtrips to/from client
+	  0  sorts (memory)
+	  0  sorts (disk)
+36598  rows processed
+
