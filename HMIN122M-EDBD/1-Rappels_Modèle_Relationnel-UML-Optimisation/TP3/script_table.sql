@@ -26,3 +26,4 @@ create table departement
 alter table departement add foreign key(reg) references region(id);
 alter table ville add foreign key(dep) references departement(id);
 alter table ville add primary key(insee);
+CREATE INDEX idx_dep_ville ON Ville(dep);

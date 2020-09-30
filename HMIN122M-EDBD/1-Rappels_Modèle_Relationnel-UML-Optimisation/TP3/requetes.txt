@@ -1,7 +1,7 @@
-SELECT nom FROM ville WHERE insee = '34172';
+SELECT /* USE_NL(Ville) */ nom FROM ville WHERE insee = '34172';
 
-SELECT DISTINCT departement.nom FROM departement, ville WHERE ville.dep = departement.id AND insee = '34172';
+SELECT DISTINCT /* USE_NL(Departement) */ departement.nom FROM departement, ville WHERE ville.dep = departement.id AND insee = '34172';
 
-SELECT DISTINCT departement.nom FROM departement, ville WHERE ville.dep = departement.id;
+SELECT DISTINCT /* USE_NL(Departement) */ departement.nom FROM departement, ville WHERE ville.dep = departement.id;
 
-SELECT ville.nom, departement.nom FROM Ville, Departement WHERE ville.dep = departement.id AND departement.id = '91';
+SELECT /* USE_NL(Ville Departement) */ ville.nom, departement.nom FROM Ville, Departement WHERE ville.dep = departement.id AND departement.id = '91';
