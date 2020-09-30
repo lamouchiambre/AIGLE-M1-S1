@@ -5,3 +5,7 @@ SELECT DISTINCT /* USE_NL(Departement) */ departement.nom FROM departement, vill
 SELECT DISTINCT /* USE_NL(Departement) */ departement.nom FROM departement, ville WHERE ville.dep = departement.id;
 
 SELECT /* USE_NL(Ville Departement) */ ville.nom, departement.nom FROM Ville, Departement WHERE ville.dep = departement.id AND departement.id = '91';
+
+
+Q10 :
+SELECT ville.nom, departement.nom, region.nom FROM Ville, Departement, Region WHERE ville.dep = departement.id AND departement.reg = region.id;
