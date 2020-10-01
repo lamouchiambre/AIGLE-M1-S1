@@ -49,7 +49,7 @@ public abstract class AbstractDictionary implements IDictionary {
 
 	@Override
 	public String toString() {
-		return "AbstractDictionary [keys=" + Arrays.toString(keys) + ", values=" + Arrays.toString(values) + "]";
+		return "Dictionary [keys=" + Arrays.toString(keys) + ", values=" + Arrays.toString(values) + "]";
 	}
 
 	public Object get(Object key) {

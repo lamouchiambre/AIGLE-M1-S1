@@ -2,6 +2,8 @@ package dico;
 
 import java.util.Arrays;
 
+//import java.util.Arrays;
+
 
 public class SortedDictionary extends OrderedDictionary {
 
@@ -34,7 +36,7 @@ public class SortedDictionary extends OrderedDictionary {
 
 	// (Comparable<Object> keys[i]) compareTo(key)
 
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	//	protected int newIndexOf(Object key) {
 	//		int i = 0;
 	//		this.grow();
@@ -51,6 +53,7 @@ public class SortedDictionary extends OrderedDictionary {
 	protected int newIndexOf(Object key) {
 		//this.grow();
 		if (this.size() == 0) {
+			this.grow();
 			return 0;
 		}
 
@@ -80,21 +83,26 @@ public class SortedDictionary extends OrderedDictionary {
 
 		return deb;
 	}
-
-	public static void main(String[] args) {
-		SortedDictionary sd = new SortedDictionary(1);
-//		Comparable un = 1;
-//		System.out.println(un.compareTo(2));
-		sd.put("a", "value1");
-		sd.put("c", "value3");
-		sd.put("b", "value2");
-		System.out.println(sd);
-		//		System.out.println(sd.compareTo(
-		//				sd.getKeys()[sd.indexOf("a")], 
-		//				sd.getKeys()[sd.indexOf("b")]));
-		//		System.out.println(sd.compareTo(
-		//				sd.getValues()[sd.indexOf("a")], 
-		//				sd.getValues()[sd.indexOf("b")]));
-		//		System.out.println(sd);
+	
+	@Override
+	public String toString() {
+		return "SortedDictionary [keys=" + Arrays.toString(getKeys()) + ", values=" + Arrays.toString(getValues()) + "]";
 	}
+
+//	public static void main(String[] args) {
+//		SortedDictionary sd = new SortedDictionary(1);
+////		Comparable un = 1;
+////		System.out.println(un.compareTo(2));
+//		sd.put("a", "value1");
+//		sd.put("c", "value3");
+//		sd.put("b", "value2");
+//		System.out.println(sd);
+//		//		System.out.println(sd.compareTo(
+//		//				sd.getKeys()[sd.indexOf("a")], 
+//		//				sd.getKeys()[sd.indexOf("b")]));
+//		//		System.out.println(sd.compareTo(
+//		//				sd.getValues()[sd.indexOf("a")], 
+//		//				sd.getValues()[sd.indexOf("b")]));
+//		//		System.out.println(sd);
+//	}
 }
