@@ -1,3 +1,5 @@
+(: 1) XPath : Films :)
+
 (: 1. Les titres des films. :)
 (:
 //FILM/TITRE
@@ -57,3 +59,39 @@
 (:
 /FILMS/FILM[/FILMS/ARTISTE[ACTNOM = "Willis" and ACTPNOM = "Bruce"]/@id = ROLES/ROLE/@idref]/TITRE
 :)
+
+(: 13. Quel rôle joue Harvey Keitel dans Reservoir dogs ? :)
+(:
+/FILMS/FILM[TITRE = "Reservoir dogs"]/ROLES/ROLE[@idref = /FILMS/ARTISTE[ACTNOM = "Keitel" and ACTPNOM = "Harvey"]/@id]
+:)
+
+(: 14. Qui a joué avec Harvey Keitel dans Reservoir dogs ? :)
+(:
+/FILMS/FILM[TITRE = "Reservoir dogs"]/ROLES/ROLE[not(@idref = /FILMS/ARTISTE[ACTNOM = "Keitel" and ACTPNOM = "Harvey"]/@id)]
+:)
+
+(: 15. Donnez les nœuds qui ont exactement trois descendants (utiliser la fonction count()). :)
+(:
+//*[count(descendant::*) = 3]
+:)
+
+(: 16. Donnez les nœuds dont le nom contient la chaîne "TI" (utiliser la fonction name()). :)
+(:
+//*[contains(name(), "TI")]
+:)
+
+(: 17. Quel est le titre du film qui précède immédiatement Shining (dans l’ordre du document) ? :)
+(:
+/descendant::FILM[TITRE = "Shining"]/following-sibling::FILM[position() = 1]/TITRE
+:)
+
+(: 2) XPath : Recettes :)
+
+(: 1. Le nom complet de toutes les recettes :)
+(:
+//recette/@nom
+:)
+
+(: 2. Les ingrédients de la recette dont le nom court est "Chiffonnade" :)
+
+//recette[@nomCourt = "Chiffonnade"]
