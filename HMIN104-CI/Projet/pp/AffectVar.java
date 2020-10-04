@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AffectVar extends Inst {
 	
-	ArrayList < AffecFun > af;
+	ArrayList < AffectFun > af;
 
 	public AffectVar(ArrayList < AffectFun > af) {
         this.af = af;

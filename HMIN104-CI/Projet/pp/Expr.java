@@ -2,7 +2,7 @@ package pp;
 
 public abstract class Expr {
 
-	Expr e;
+	//Expr e;
 
 	public abstract void print();
 }
