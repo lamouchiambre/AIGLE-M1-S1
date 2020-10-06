@@ -1,1 +1,40 @@
-<mxfile host="app.diagrams.net" modified="2020-10-06T09:39:37.960Z" agent="5.0 (X11)" version="13.7.7" etag="9Ub2GbhMNBm0Kg7Rtt7i" type="github"><diagram id="5zUBm7oEcaPHrUG3NYer">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-10-06T09:57:00.518Z" agent="5.0 (X11)" etag="lEN_RBp4aCbWH3-7zZzk" version="13.7.7" type="github">
+  <diagram id="5zUBm7oEcaPHrUG3NYer" name="Page-1">
+    <mxGraphModel dx="452" dy="740" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-1" value="&lt;&lt;Abstract&gt;&gt;&#xa;Componante" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="230" width="140" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-7" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;" edge="1" parent="1" source="i0EED8YwrmaSVe-sY91Q-5" target="i0EED8YwrmaSVe-sY91Q-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="110" y="310" as="sourcePoint" />
+            <mxPoint x="270" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-10" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;" edge="1" parent="1" source="i0EED8YwrmaSVe-sY91Q-8" target="i0EED8YwrmaSVe-sY91Q-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="220" y="390" as="sourcePoint" />
+            <mxPoint x="220" y="292" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-5" value="&lt;&lt;Abstract&gt;&gt;&#xa;Composite" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="20" y="370" width="140" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-8" value="&lt;&lt;Abstract&gt;&gt;&#xa;Leaf" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="230" y="370" width="140" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="i0EED8YwrmaSVe-sY91Q-11" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;" edge="1" parent="1" source="i0EED8YwrmaSVe-sY91Q-5" target="i0EED8YwrmaSVe-sY91Q-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="60" y="180" as="sourcePoint" />
+            <mxPoint x="160" y="260" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="80" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
