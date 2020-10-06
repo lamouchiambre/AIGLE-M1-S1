@@ -43,7 +43,7 @@ class DecVar extends Dec {
 	this.t = t;
     }
     public void print(){
-	System.out.print("var");
+	System.out.print("var ");
 	iden.print();
 	System.out.print(" : ");
 	t.print();
@@ -259,7 +259,7 @@ class SequenceInst extends Inst {
     }
 }
 
-public abstract class Expr {
+abstract class Expr {
     public abstract void print();
 }
 abstract class Cst extends Expr {
@@ -544,7 +544,7 @@ class Fun extends App {
     }
 }
 
-class Test {
+public class langageAST3 {
     public static void main(String[] argv) {
 	ANTLRInputStream stream = new ANTLRInputStream(argv[0]);
 	langageAST3ListLexer lexer = new langageAST3ListLexer(stream);
@@ -556,3 +556,4 @@ class Test {
     }
     
 }
+

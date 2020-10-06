@@ -1,5 +1,5 @@
 GPP = gcc
-SRC = traitement_synchro.c
+SRC = exo4.c
 OBJ = $(SRC:%.c=%.o) calculC.o
 EXE = exec
 
