@@ -93,5 +93,14 @@
 :)
 
 (: 2. Les ingrédients de la recette dont le nom court est "Chiffonnade" :)
+(:
+//recette[@nomCourt = "Chiffonnade"]/materiel/ingredient
+:)
 
-//recette[@nomCourt = "Chiffonnade"]
+(: 3. Le nom complet des recettes utilisant du “persil” :)
+(:
+//recette[materiel/ingredient = "asperge"]/@nom
+:)
+
+(: 4. (Sans utiliser l’axe child) Le nom complet des recettes utilisant du “persil”. :)
+
