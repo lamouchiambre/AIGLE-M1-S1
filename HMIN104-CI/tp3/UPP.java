@@ -84,7 +84,7 @@ class UPPGVar extends UPPExpr {
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         return new RTLVar();
-
+        //To do
     }//toRTL
 
 }//UPPGVar
@@ -103,7 +103,12 @@ class UPPNot extends UPPUnOp {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
-        //TODO
+        /* Used for the "not" operation
+      not(e) = xori %1, %0, 1 */
+
+      PRegister regE = e.getPRegister(locals);
+      RTLInst not = new RTLXOri(regE, reg, succ);
+      return e.toRTL(locals, globals, regE, not);
     }//toRTL
 
 }//UPPNot
@@ -125,9 +130,9 @@ class UPPAdd extends UPPBinOp {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         PRegister regE1 = e1.getPRegister(locals);
         PRegister regE2 = e2.getPRegister(locals);
-        RTLInst add = new RTLAdd(regE1,regE2,reg,succ);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,add);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst add = new RTLAdd(regE1, regE2, reg, succ);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, add);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPAdd
@@ -143,9 +148,9 @@ class UPPSub extends UPPBinOp {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         PRegister regE1 = e1.getPRegister(locals);
         PRegister regE2 = e2.getPRegister(locals);
-        RTLInst sub = new RTLSub(regE1,regE2,reg,succ);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,sub);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst sub = new RTLSub(regE1, regE2, reg, succ);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, sub);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPSub
@@ -161,9 +166,9 @@ class UPPMul extends UPPBinOp {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         PRegister regE1 = e1.getPRegister(locals);
         PRegister regE2 = e2.getPRegister(locals);
-        RTLInst mul = new RTLMul(regE1,regE2,reg,succ);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,mul);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst mul = new RTLMul(regE1, regE2, reg, succ);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, mul);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPMul
@@ -179,9 +184,9 @@ class UPPDiv extends UPPBinOp {
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
         PRegister regE1 = e1.getPRegister(locals);
         PRegister regE2 = e2.getPRegister(locals);
-        RTLInst div = new RTLDiv(regE1,regE2,reg,succ);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,div);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst div = new RTLDiv(regE1, regE2, reg, succ);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, div);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPDiv
@@ -195,7 +200,11 @@ class UPPAnd extends UPPBinOp {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
-        //TODO
+      PRegister regE1 = e1.getPRegister(locals);
+      PRegister regE2 = e2.getPRegister(locals);
+      RTLInst and = new RTLAnd(regE1, regE2, reg, succ);
+      RTLInst ne2 = e2.toRTL(locals, globals, regE2, and);
+      return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPAnd
@@ -209,7 +218,11 @@ class UPPOr extends UPPBinOp {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
-        //TODO
+      PRegister regE1 = e1.getPRegister(locals);
+      PRegister regE2 = e2.getPRegister(locals);
+      RTLInst or = new RTLOr(regE1, regE2, reg, succ);
+      RTLInst ne2 = e2.toRTL(locals, globals, regE2, or);
+      return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPOr
@@ -227,9 +240,9 @@ class UPPLt extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         RTLInst cTrue = new RTLCte(reg, 1, succ);
         RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLLt(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst branch = new RTLLt(regE1, regE2, cTrue, cFalse);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPLt
@@ -247,9 +260,9 @@ class UPPLe extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         RTLInst cTrue = new RTLCte(reg, 1, succ);
         RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLLe(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst branch = new RTLLe(regE1, regE2, cTrue, cFalse);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPLe
@@ -267,9 +280,9 @@ class UPPEq extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         RTLInst cTrue = new RTLCte(reg, 1, succ);
         RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLEq(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst branch = new RTLEq(regE1, regE2, cTrue, cFalse);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPEq
@@ -283,13 +296,13 @@ class UPPNe extends UPPBinOp {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
-        PRegister regE1 = e1.getPRegister(locals);
-        PRegister regE2 = e2.getPRegister(locals);
-        RTLInst cTrue = new RTLCte(reg, 1, succ);
-        RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLNe(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+      PRegister regE1 = e1.getPRegister(locals);
+      PRegister regE2 = e2.getPRegister(locals);
+      RTLInst cTrue = new RTLCte(reg, 1, succ);
+      RTLInst cFalse = new RTLCte(reg, 0, succ);
+      RTLInst branch = new RTLNe(regE1, regE2, cTrue, cFalse);
+      RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+      return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPNe
@@ -307,9 +320,9 @@ class UPPGe extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         RTLInst cTrue = new RTLCte(reg, 1, succ);
         RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLGe(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst branch = new RTLGe(regE1, regE2, cTrue, cFalse);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPGe
@@ -327,9 +340,9 @@ class UPPGt extends UPPBinOp {
         PRegister regE2 = e2.getPRegister(locals);
         RTLInst cTrue = new RTLCte(reg, 1, succ);
         RTLInst cFalse = new RTLCte(reg, 0, succ);
-        RTLInst branch = new RTLGt(regE1,regE2,cTrue,cFalse);
-        RTLInst ne2 = e2.toRTL(locals,globals,regE2,branch);
-        return e1.toRTL(locals,globals,regE1,ne2);
+        RTLInst branch = new RTLGt(regE1, regE2, cTrue, cFalse);
+        RTLInst ne2 = e2.toRTL(locals, globals, regE2, branch);
+        return e1.toRTL(locals, globals, regE1, ne2);
     }//toRTL
 
 }//UPPGt
@@ -370,7 +383,9 @@ class UPPLoad extends UPPExpr {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, PRegister reg, RTLInst succ) {
-        //TODO
+      PRegister regE = adrr.getPRegister(locals);
+      RTLInst not = new RTLLoad(regE, reg, succ);
+      return e.toRTL(locals, globals, regE1, not);
     }//toRTL
 
 }//UPPLoad
@@ -432,9 +447,9 @@ class UPPStore extends UPPInst {
                    ArrayList<String> globals, RTLInst succ) {
         PRegister regAddr = addr.getPRegister(locals);
         PRegister regVal = val.getPRegister(locals);
-        RTLInst store = new RTLStore(regAddr,regVal,succ);
-        RTLInst nval = val.toRTL(locals,globals,regVal,store);
-        return addr.toRTL(locals,globals,regAddr,nval);
+        RTLInst store = new RTLStore(regAddr, regVal, succ);
+        RTLInst nval = val.toRTL(locals, globals, regVal, store);
+        return addr.toRTL(locals, globals, regAddr, nval);
     }//toRTL        
 
 }//UPPStore
@@ -453,8 +468,8 @@ class UPPCond extends UPPInst {
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, RTLInst succ) {
         PRegister regCond = cond.getPRegister(locals);
-        RTLInst ni1 = i1.toRTL(locals,globals, succ);
-        RTLInst ni2 = i2.toRTL(locals,globals, succ);
+        RTLInst ni1 = i1.toRTL(locals, globals, succ);
+        RTLInst ni2 = i2.toRTL(locals, globals, succ);
         RTLInst ncond = new RTLGtz(regCond, ni1, ni2);
         return ncond.toRTL(locals, globals, regCond, ncond);
     }//toRTL
@@ -474,9 +489,9 @@ class UPPWhile extends UPPInst {
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, RTLInst succ) {
         PRegister regCond = cond.getPRegister(locals);
-        RTLGtz gtz = new RTLGtz(regCond,null,succ);
-        RTLInst ncond = cond.toRTL(locals,globals,regCond,gtz);
-        RTLInst ni = i.toRTL(locals,globals,ncond);
+        RTLGtz gtz = new RTLGtz(regCond, null, succ);
+        RTLInst ncond = cond.toRTL(locals, globals, regCond, gtz);
+        RTLInst ni = i.toRTL(locals, globals, ncond);
         gtz.succ1 = ni;
         return ncond;
     }//toRTL
@@ -495,7 +510,13 @@ class UPPProcCall extends UPPInst {
 
     RTLInst toRTL (ArrayList<Pair<String,PRegister>> locals,
                    ArrayList<String> globals, RTLInst succ) {
-        //TODO
+      ArrayList<PRegister> regArgs = new ArrayList<PRegister>();        
+                
+      for (String e : args) {
+        PRegister reg = new PRegister ();
+        regArgs.add(reg);
+      }
+      return new RTLProcCall(callee,regArgs,succ);
     }//toRTL
 
 }//UPPProcCall
@@ -587,7 +608,24 @@ class UPPProc extends UPPDef {
     }//UPPProc
 
     RTLDef toRTL (ArrayList<String> globals) {
-        //TODO
+      ArrayList<PRegister> regArgs = new ArrayList<PRegister>();
+      ArrayList<PRegister> regLocals = new ArrayList<PRegister>();
+      ArrayList<Pair<String,PRegister>> regTrans = new ArrayList<Pair<String,PRegister>>();
+      for (String e : args) {
+        PRegister reg = new PRegister ();
+        Pair<String,PRegister> p = new Pair<String,PRegister>(e,reg);
+        regArgs.add(reg);
+        regLocals.add(reg);
+        regTrans.add(p);
+      }//for
+      for (String e : locals) {
+        PRegister reg = new PRegister ();
+        Pair<String,PRegister> p = new Pair<String,PRegister>(e,reg);
+        regLocals.add(reg);
+        regTrans.add(p);
+      }//for
+      RTLInst body = code.toRTL(regTrans, globals, new RTLEnd());
+      return new RTLFun(name, regArgs, regLocals, body);
     }//toRTL
 
 }//UPPProc
