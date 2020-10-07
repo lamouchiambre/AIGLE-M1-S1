@@ -69,11 +69,11 @@ abstract class RTLInst {
 }//RTLInst
 
 // This is a leaf (which closes a branch of the graph).
-class RTLEnd extends RTLInst {}//RTLEnd
+class RTLEnd extends RTLInst {}//RTLEnd // bouchon
 
 class RTLCte extends RTLInst {
 
-    PRegister reg;
+    PRegister reg; // pseudo registre
     int imm;
     RTLInst succ;
 
@@ -225,7 +225,7 @@ class RTLOr extends RTLBinOp {
 
 }//RTLOr
 
-// We marge function and procedure calls
+// We merge function and procedure calls
 abstract class RTLCall extends RTLInst {
 
     Callee callee;

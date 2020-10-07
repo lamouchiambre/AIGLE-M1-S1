@@ -49,6 +49,7 @@ class PPCte extends PPExpr {
 class PPTrue extends PPExpr {
 
     UPPExpr toUPP(ArrayList<String> locals) {
+        return new UPPTrue();
         //TODO
         //pas de constructeur
     }//toUPP
@@ -58,7 +59,7 @@ class PPTrue extends PPExpr {
 class PPFalse extends PPExpr {
 
     UPPExpr toUPP(ArrayList<String> locals) {
-    return new UPPTrue();
+    return new UPPFalse();
     }//toUPP
 
 }//PPFalse
@@ -72,6 +73,9 @@ class PPVar extends PPExpr {
     }//PPVar
 
     UPPExpr toUPP(ArrayList<String> locals) {
+
+        return new UPPVar(name);
+        // return new UPPGVar(name);
         //TODO
     }//toUPP
 
@@ -90,6 +94,10 @@ class PPInv extends PPUnOp {
     }//PPInv
 
     UPPExpr toUPP(ArrayList<String> locals) {
+        UPPExpr inv = e.toUPP(locals);
+        UPPExpr zero = new PPCte(0).toUPP(locals);
+
+        return new UPPSub(zero, inv);
         //TODO
     }//toUPP
 
@@ -212,7 +220,9 @@ class PPLt extends PPBinOp {
     }//PPLt
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPLt(ne1, ne2);
     }//toUPP
 
 }//PPLt
@@ -225,7 +235,9 @@ class PPLe extends PPBinOp {
     }//PPLe
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPLe(ne1, ne2);
     }//toUPP
 
 }//PPLe
@@ -238,7 +250,9 @@ class PPEq extends PPBinOp {
     }//PPEq
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPEq(ne1, ne2);
     }//toUPP
 
 }//PPEq
@@ -251,7 +265,9 @@ class PPNe extends PPBinOp {
     }//PPNe
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPNe(ne1, ne2);
     }//toUPP
 
 }//PPNe
@@ -264,7 +280,9 @@ class PPGe extends PPBinOp {
     }//PPGe
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPGe(ne1, ne2);
     }//toUPP
 
 }//PPGe
@@ -277,7 +295,9 @@ class PPGt extends PPBinOp {
     }//PPGt
 
     UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+        UPPExpr ne1 = e1.toUPP(locals);
+        UPPExpr ne2 = e2.toUPP(locals);
+        return new UPPGt(ne1, ne2);
     }//toUPP
 
 }//PPGt
@@ -326,8 +346,11 @@ class PPArrayGet extends PPExpr {
         this.index = index;
     }//PPArrayGet
 
-    UPPExpr toUPP(ArrayList<String> locals) {
-        //TODO
+    UPPExpr toUPP(ArrayList<String> locals) { // UPPLoad
+        UPPExpr arrr = arr.toUPP(locals);
+        UPPExpr indexx = index.toUPP(locals);
+        UPPExpr adrr = new UPPAdd(arrr, new UPPMul(new UPPCte(4), indexx));
+        return new UPPLoad(adrr);
     }//toUPP
 
 }//PPArrayGet
@@ -347,7 +370,7 @@ class PPArrayAlloc extends PPExpr {
         UPPExpr sizeBytes = new UPPMul(new UPPCte(4),nsize);
         ArrayList<UPPExpr> args = new ArrayList<UPPExpr>();
         args.add(sizeBytes);
-        return new UPPFunCall(new Alloc(),args);
+        return new UPPFunCall(new Alloc(), args);
     }//toUPP
 
 }//PPArrayAlloc
@@ -389,8 +412,12 @@ class PPArraySet extends PPInst {
         this.val = val;
     }//PPArraySet
 
-    UPPInst toUPP(ArrayList<String> locals) {
-        //TODO
+    UPPInst toUPP(ArrayList<String> locals) { // UPPStore
+        UPPExpr arrr = arr.toUPP(locals);
+        UPPExpr indexx = index.toUPP(locals);
+        UPPExpr vall = val.toUPP(locals);
+        UPPExpr adrr = new UPPAdd(arrr, new UPPMul(new UPPCte(4), indexx));
+        return new UPPStore(adrr, vall);
     }//toUPP
 
 }//PPArraySet
@@ -425,7 +452,9 @@ class PPWhile extends PPInst {
     }//PPWhile
 
     UPPInst toUPP (ArrayList<String> locals) {
-        //TODO
+        UPPExpr condd = cond.toUPP(locals);
+        UPPInst ii = i.toUPP(locals);
+        return new UPPWhile(condd, ii);
     }//toUPP
 
 }//PPWhile
