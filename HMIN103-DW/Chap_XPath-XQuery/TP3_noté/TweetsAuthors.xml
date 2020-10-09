@@ -1,0 +1,116 @@
+<TweetsAuthors>
+  <Tweet id_tweet="01" idref_author="alpha" seconds="39600" timer_zone="UTC+1" >
+    <Coord>
+  	  <Longitude>2.294481</Longitude>
+  	  <Latitude>48.858370</Latitude>
+    </Coord>
+    <City>Paris</City>
+    <Country>France</Country>
+    <OS>Android</OS>
+    <Content id="c01" font_size="12" font_type="Arial" font_color="black" language="french">
+      <UserReference>@beta</UserReference>
+      <Text>Bonjour ! Comment vas-tu ?</Text>
+      <Hashtag>#NiceDay</Hashtag>
+      <Retweets>3</Retweets>
+      <AuthorizedReply>Tout le monde</AuthorizedReply>
+    </Content>
+  </Tweet>
+
+    <Tweet id_tweet="02" idref_author="beta" seconds="39600" timer_zone="UTC+1" >
+    <Coord>
+  	  <Longitude>3.874481</Longitude>
+  	  <Latitude>65.857670</Latitude>
+    </Coord>
+    <City>Montpellier</City>
+    <Country>France</Country>
+    <OS>Android</OS>
+    <Content id="c02" font_size="12" font_type="Arial" font_color="black" language="french">
+      <UserReference>@alpha</UserReference>
+      <Text>Très bien et toi ?</Text>
+      <Hashtag>#WeTweetLikeWeWant</Hashtag>
+      <Retweets>40</Retweets>
+      <AuthorizedReply>Tout le monde</AuthorizedReply>
+    </Content>
+  </Tweet>
+
+    <Tweet id_tweet="03" idref_author="alpha" seconds="39600" timer_zone="UTC+1" >
+    <Coord>
+  	  <Longitude>2.294481</Longitude>
+  	  <Latitude>48.858370</Latitude>
+    </Coord>
+    <City>Paris</City>
+    <Country>France</Country>
+    <OS>Android</OS>
+    <Content id="c01" font_size="12" font_type="Arial" font_color="black" language="french">
+      <UserReference>@beta</UserReference>
+      <Text>Bah super, comme tout les jours.</Text>
+      <Hashtag>#Hehe</Hashtag>
+      <Retweets>2</Retweets>
+      <AuthorizedReply>Tout le monde</AuthorizedReply>
+    </Content>
+  </Tweet>
+
+    <Tweet id_tweet="04" idref_author="charlie" seconds="39600" timer_zone="UTC+1" >
+    <Coord>
+  	  <Longitude>1.294481</Longitude>
+  	  <Latitude>49.858370</Latitude>
+    </Coord>
+    <City>Marseille</City>
+    <Country>France</Country>
+    <OS>Android</OS>
+    <Content id="c04" font_size="12" font_type="Arial" font_color="black" language="french">
+      <UserReference>@alpha</UserReference>
+      <Text>Ah bon ?! Parce que t'allais pas très bien hier..</Text>
+      <Hashtag>#LetMeHaveADoubt</Hashtag>
+      <Retweets>32</Retweets>
+      <AuthorizedReply>Tout le monde</AuthorizedReply>
+    </Content>
+  </Tweet>
+
+    <Tweet id_tweet="05" idref_author="alpha" seconds="39600" timer_zone="UTC+1" >
+    <Coord>
+  	  <Longitude>2.294481</Longitude>
+  	  <Latitude>48.858370</Latitude>
+    </Coord>
+    <City>Paris</City>
+    <Country>France</Country>
+    <OS>Android</OS>
+    <Content id="c05" font_size="12" font_type="Arial" font_color="black" language="french">
+      <UserReference>@charlie</UserReference>
+      <Text>Ouais, j'avais marché sur un légo. Horrible xP</Text>
+      <Hashtag>#TheLifeIsSadSometime</Hashtag>
+      <Retweets>404</Retweets>
+      <AuthorizedReply>Tout le monde</AuthorizedReply>
+    </Content>
+  </Tweet>
+
+  <Author id_author="alpha">
+    <Name>Alpha</Name>
+    <Profil url="https://twitter.com/alpha">
+      <Description>Je suis un utilisateur Alpha :D</Description>
+      <UserPicture></UserPicture>
+      <Followers>123</Followers>
+      <Suscribers>21</Suscribers>
+    </Profil>
+  </Author>
+
+  <Author id_author="beta">
+    <Name>Beta</Name>
+    <Profil url="https://twitter.com/beta">
+      <Description>Je suis un un peu Beta parfois lol</Description>
+      <UserPicture></UserPicture>
+      <Followers>33</Followers>
+      <Suscribers>61</Suscribers>
+    </Profil>
+  </Author>
+
+  <Author id_author="charlie">
+    <Name>Charlie</Name>
+    <Profil url="https://twitter.com/charlie">
+      <Description>Je suis très Charlie.</Description>
+      <UserPicture></UserPicture>
+      <Followers>523</Followers>
+      <Suscribers>71</Suscribers>
+    </Profil>
+  </Author>
+</TweetsAuthors>

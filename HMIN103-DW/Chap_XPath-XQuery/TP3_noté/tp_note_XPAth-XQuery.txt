@@ -1,0 +1,17 @@
+1. Indiquer le nombre de tweets et d’utilisateurs dans la base.
+
+let $t := count(/Tweet)
+let $a := count(/Author)
+return ($t, $a)
+
+2. Donner l’ensemble des hashtags contenus dans la base.
+ 
+for $c in /descendant::Tweet/descendant::Content
+	return $c/Hashtag
+	
+3. Créer une liste de paires tweet-auteur, avec chaque paire contenue dans un element result.
+
+let $t := /descendant::Tweet
+	return 
+	<result></result>
+			
