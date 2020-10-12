@@ -55,13 +55,13 @@ int n_verrou_lock(n_verrou * v){
   return pthread_mutex_unlock(&v->verrou);
 }
 
-int im_verrou_lock(im_verrou * v){
+int im_verrou_lock(n_verrou * v){
 
   pthread_mutex_lock(&v->verrou);
 
   v->nb_thread_waiting++;
 
-  if(v->nb_thread_waiting < v->init_thread_number) {
+  if(v->nb_thread_waiting < v->max_thread_number) {
     do {
       pthread_cond_wait(&v->cond, &v->verrou);
     } while(v->current_thread_inside > v->max_thread_number){
