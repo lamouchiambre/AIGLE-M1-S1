@@ -7,23 +7,14 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
  
 struct image {
   int id;
-  int * lenght;
-  int * zones; 
+  int* lenght;
+  int* zones; 
 };
 
-void* activity(void * p){
-  struct image * params = (struct image *) p;
-  /*
-    pthread_mutex_lock(&mutex);
-    printf("zone[0] %i \n", *(params->zones[0]));
-    printf("length %i\n",*( params->lenght));
-    printf("id %i", params->id);
-    pthread_mutex_unlock(&mutex);
-  */
-  // zones[i] -> paratege
-  // id -> propre aux thraeds
+void* activity(void* p){
+  struct image* params = (struct image *) p;
 
-  for (int i =0; i < *(params->lenght); i++) {
+  for (int i = 0; i < *(params->lenght); i++) {
     if (params->zones[i] > params->id) continue;
     pthread_mutex_lock(&mutex);
 
@@ -54,11 +45,11 @@ int main (int argc, char* argv[]) {
   }
 
   // Les threads
-  pthread_t * threads = (pthread_t *) malloc(n * sizeof(pthread_t));
+  pthread_t* threads = (pthread_t*) malloc(n * sizeof(pthread_t));
 
   for (int i = 0; i<n; i++) {
    // Specifique à chaque image
-    struct image *params = (struct image *) malloc( n * sizeof(struct image) );
+    struct image *params = (struct image*) malloc(n * sizeof(struct image) );
     params->id = i; 
 
     //  Communes
@@ -67,7 +58,7 @@ int main (int argc, char* argv[]) {
     pthread_create(&threads[i], NULL, activity, params); 
   }
 
-  for (int i=0; i<n ;i++) {
+  for (int i=0; i<n; i++) {
     pthread_join(threads[i], NULL);
   }
 

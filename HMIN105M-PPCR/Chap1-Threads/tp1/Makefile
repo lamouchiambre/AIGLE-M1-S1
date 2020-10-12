@@ -1,5 +1,5 @@
 GPP = gcc
-SRC = exo4.c
+SRC = exo4_try.c
 OBJ = $(SRC:%.c=%.o) calculC.o
 EXE = exec
 
