@@ -1,30 +1,35 @@
 import java.util.ArrayList;
+import org.antlr.v4.runtime .*;
 
 class Prog {
-    ArrayList < DecFonc > p;
+    ArrayList < Dec > p;
     Inst i;
 
     public Prog(Inst i) {
+        System.out.println("1");
         this.p = null;
         this.i = i;
     }
     
-    public Prog(ArrayList < DecFonc > p) {
+    public Prog(ArrayList < Dec > p) {
+        System.out.println("2");
         this.p = p;
         this.i = null;
     }
 
-    public Prog(ArrayList < DecFonc > p, Inst i) {
+    public Prog(ArrayList < Dec > p, Inst i) {
+        System.out.println("3");
         this.p = p;
         this.i = i;
     }
 
     public void print() {
-        String args = "";
-        for (int i = 0; i < this.p.size(); i++) {
-	    args += p.get(i).toString();
-        }
-        System.out.print(args);
+        
+        for (int i = 0; i < this.p.size(); i++){ 
+    
+	        p.get(i).print();
+        } 
+        
         this.i.print();
     }
 }
@@ -35,44 +40,44 @@ abstract class Dec {
 }
 
 class DecVar extends Dec {
-    Identif iden;
+    String iden;
     Type t;
 
-    public DecVar(Identif iden, Type t) {
+    public DecVar(String iden, Type t) {
 	this.iden = iden;
 	this.t = t;
     }
     public void print(){
 	System.out.print("var ");
-	iden.print();
+	iden.toString();
 	System.out.print(" : ");
 	t.print();
     }
 }
 
 class DecPar extends Dec {
-    Identif iden;
+    String iden;
     Type t;
 
-    public DecPar(Identif iden, Type t) {
+    public DecPar(String iden, Type t) {
 	this.iden = iden;
 	this.t = t;
     }
     public void print(){
-	iden.print();
+	iden.toString();
 	System.out.print(" : ");
 	t.print();
     }
 }
 
 class DecFonc extends Dec {
-    Identif iden;
+    String iden;
     ArrayList<DecPar> lDecPar;
     ArrayList<DecVar> lDecVar;
     Type t;
     Inst i;
 
-    public DecFonc(Identif iden, ArrayList<DecPar> lDecPar, Type t, Inst i) {
+    public DecFonc(String iden, ArrayList<DecPar> lDecPar, Type t, Inst i) {
 	this.iden = iden;
 	this.lDecPar = lDecPar;
 	this.lDecVar = null;
@@ -80,7 +85,7 @@ class DecFonc extends Dec {
 	this.i = i;
     }
     
-    public DecFonc(Identif iden,  Type t, Inst i) {
+    public DecFonc(String iden,  Type t, Inst i) {
 	this.iden = iden;
 	this.lDecPar = null;
 	this.lDecVar = null;
@@ -88,7 +93,7 @@ class DecFonc extends Dec {
 	this.i = i;
     }
 
-    public DecFonc(Identif iden, ArrayList<DecPar> lDecPar, Type t, ArrayList<DecVar> lDecVar, Inst i) {
+    public DecFonc(String iden, ArrayList<DecPar> lDecPar, Type t, ArrayList<DecVar> lDecVar, Inst i) {
 	this.iden = iden;
 	this.lDecPar = lDecPar;
 	this.t = t;
@@ -96,23 +101,33 @@ class DecFonc extends Dec {
 	this.i = i;
     }
 
-    public DecFonc(Identif iden, Type t, ArrayList<DecVar> lDecVar, Inst i) {
+    public DecFonc(String iden, Type t, ArrayList<DecVar> lDecVar, Inst i) {
 	this.iden = iden;
 	this.t = t;
 	this.lDecVar = lDecVar;
 	this.i = i;
 	this.lDecVar = null;
     }
-}
 
-class Identif {
-    String text;
-
-    public void print() {
-	System.out.print(text);
+    public void print(){
+        String args = "";
+        String var = "";
+        iden.toString();
+        if(lDecPar != null){
+            for (int i = 0; i < this.lDecPar.size(); i++)
+                args += lDecPar.get(i).toString();
+                System.out.print("(" + args+ ") : ");
+        }else System.out.print("() : ");
+        t.print();
+        if(lDecVar != null){
+            for (int i = 0; i < this.lDecVar.size(); i++)
+                var += lDecPar.get(i).toString();
+                System.out.print(var);
+        }
+        i.print();
+        
     }
 }
-
 
 abstract class Type {
     abstract void print();
@@ -142,51 +157,19 @@ abstract class Inst {
     abstract void print();
 }
 class Affec extends Inst {
-    protected Identif iden;
+    protected String iden;
     protected Expr e;
     
-    public Affec(Identif iden, Expr e) {
+    public Affec(String iden, Expr e) {
         this.iden = iden;
         this.e = e;
     }
     public void print() {
-        System.out.print(this.v);
+        iden.toString();
         System.out.print(" := ");
         e.print();
     }
 }
-
-
-
-/*
-class AffecFun extends Inst {
-    String n;
-    Type t;
-
-    public AffecFun(String n, Type t) {
-        this.n = n;
-        this.t = t;
-    }
-
-    public void print() {
-        System.out.print(this.n + ": ");
-        this.t.print();
-    }
-}
-/*
-
-class AffecVar extends Inst {
-    ArrayList < AffecFun > af;
-
-    public AffecVar(ArrayList < AffecFun > af) {
-        this.af = af;
-    }
-
-    public void print(){
-    };
-
-}
-*/
 
 class AffecArray extends Inst {
     protected Expr e1;
@@ -265,14 +248,14 @@ abstract class Expr {
 abstract class Cst extends Expr {
     public abstract void print();
 }
-/* CST */
+
 class CstInt extends Cst {
-    protected String n;
+    protected String name;
     public CstInt(String n) {
-        this.n = n;
+        this.name = n;
     }
     public void print() {
-        System.out.print(this.n + " ");
+        System.out.print(this.name + " ");
     }
 }
 class CstTrue extends Cst {
@@ -286,7 +269,7 @@ class CstFalse extends Cst {
     }
 }
 
-/* UNAIRE */
+//unaire
 abstract class Uop extends Expr {
     protected Expr e1;
     public abstract void print();
@@ -310,7 +293,7 @@ class UNot extends Uop {
     }
 }
 
-/* BINAIRE */
+//binaire
 abstract class Bop extends Expr {
     protected Expr e1;
     protected Expr e2;
@@ -445,8 +428,6 @@ class BSup extends Bop {
     }
 }
 
-/* APP FUNCTION */
-
 class AppelFonction extends Expr {
     protected App a;
     protected ArrayList < Expr > args;
@@ -463,14 +444,12 @@ class AppelFonction extends Expr {
     public void print() {
         String s = "";
         for (Expr e: args)
-	    s += e.toString().toString();
+	        s += e.toString().toString();
         this.a.print();
         System.out.print("(" + s + ")");
     }
 }
 
-
-/* ARRAY OP */
 class ArrayGet extends Expr {
     protected Expr array;
     protected Expr i;
@@ -485,23 +464,6 @@ class ArrayGet extends Expr {
         System.out.print("]");
     }
 }
-
-/*
-class ArrayGetI extends Inst {
-    protected Expr array;
-    protected Expr i;
-    public ArrayGetI(Expr array, Expr i) {
-        this.array = array;
-        this.i = i;
-    }
-    public void print() {
-        array.print();
-        System.out.print("[");
-        i.print();
-        System.out.print("]");
-    }
-}
-*/
 
 class NewArray extends Expr {
     protected Type t;
@@ -547,13 +509,16 @@ class Fun extends App {
 public class langageAST3 {
     public static void main(String[] argv) {
 	ANTLRInputStream stream = new ANTLRInputStream(argv[0]);
-	langageAST3ListLexer lexer = new langageAST3ListLexer(stream);
+	langageAST3Lexer lexer = new langageAST3Lexer(stream);
 	CommonTokenStream tokens = new CommonTokenStream(lexer);
-	langageAST3ListParser parser = new langageAST3ListParser(tokens);
-	ArrayList<Expr> l = parser.listExpr().print;
+	langageAST3Parser parser = new langageAST3Parser(tokens);
+	/*ArrayList<Expr> l = parser.listExpr().print;
 	for (Expr e : l)
 	    e.print();
-    }
+    }*/
+    Prog e = parser.prog().pr;
+    e.print();
+} 
     
 }
 

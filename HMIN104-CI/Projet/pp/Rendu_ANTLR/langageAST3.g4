@@ -12,8 +12,7 @@ listDec returns [ArrayList<Dec> lDec]
 
 //Abstract
 dec returns [Dec decc] :
-    decV=decVar { $decc = new DecVar($decV.decVa); }
-    | decF=decFonc { $decc = new DecFonc($decFonc.decFo); } ;
+     decVar | decFonc ;
 
 listeDecVar returns [ArrayList<DecVar> lDecVar]
 	    @init { $lDecVar = new ArrayList<DecVar>(); } : 
@@ -28,7 +27,7 @@ decVar returns [DecVar decVa] :
        
 decPar returns [DecPar decPa] :
        iden=Identif ':' ty=type { $decPa = new DecPar($iden.text, $ty.t);}
-       | e=expr { $decPa = new Expr($e.e);} ;
+       | expr ;
        
 prog returns [Prog pr] :
      lDec=listDec inst=instr { $pr = new Prog($lDec.lDec, $inst.i); }
