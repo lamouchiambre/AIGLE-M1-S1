@@ -1,6 +1,6 @@
 GPP = gcc
-SRC = exo3_try.c
-OBJ = $(SRC:%.c=%.o) calculC.o
+SRC = client.c serveur.c
+OBJ = $(SRC:%.c=%.o)
 EXE = exec
 
 all: $(OBJ)

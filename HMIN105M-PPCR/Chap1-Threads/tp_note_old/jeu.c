@@ -17,20 +17,17 @@ struct sNverrou{
   int max_thread_number;
   pthread_mutex_t verrou;
   pthread_cond_t cond;
-};
-
-typedef struct sNverrou n_verrou;
+  pthread_t current_thread_inside;
+}; typedef struct sNverrou n_verrou;
 
 struct sParams {
    int indice;
    n_verrou* nvTab;
-};
-
-typedef struct sParams params;
+}; typedef struct sParams params;
 
 // LE VERROU SUIVANT EST UTILISE UNIQUEMENT POUR LA SORTIE STANDARD. 
 // NE PAS LE REUTILISER POUR AUTRE FONCTION QUE L'AFFICHAGE. VOIR UTILISATION PLUS LOIN.
-pthread_mutex_t vStdOut= PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t vStdOut = PTHREAD_MUTEX_INITIALIZER;
 
 // initialisation des champs de la structure n_verrou
 int n_verrou_init(n_verrou * v, int k){
@@ -46,10 +43,9 @@ int n_verrou_lock(n_verrou * v){
 
   pthread_mutex_lock(&v->verrou);
 
-  v->current_thread_number++;
-
   while(v->current_thread_number > v->max_thread_number){
     pthread_cond_wait(&v->cond, &v->verrou);
+    v->current_thread_number++;
   }
 
   return pthread_mutex_unlock(&v->verrou);

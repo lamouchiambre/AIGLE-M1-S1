@@ -14,7 +14,7 @@ int main (int argc, char * argv[]){
   if(argc != 4){
     printf("lancement : ./client operande1 operande2 chemin_fichier_cle\n");
     exit(1);
-  }
+  } // ./client 1 2 key.txt
 
   // récuperer l'identifiant de la file de message qu'on souhaite
   // utiliser. La clé est une paire : chemin vers un fichier existant
@@ -49,6 +49,13 @@ int main (int argc, char * argv[]){
     } contenu;
   } requete;
 
+  struct res {
+    long etiqReq;
+    struct contenuRes {
+      int result;
+    } contenuRes;
+  } res;
+
   //  .....
 
   // initialiser un message avant de l'envoyer.
@@ -58,15 +65,11 @@ int main (int argc, char * argv[]){
   requete.contenu.idop = 1;
   
   // envoi requete 
-  while(1) {
-    for (int i = 0; i < sizeof(requete.contenu); i++) {
-      if (msgsnd(msgid, (void *)&requete, sizeof(requete.contenu), 0) == -1) {
-        perror("erreur send");
-        exit(1);
-      }
-      printf("%d\n", i);
-    }
+  if (msgsnd(msgid, (void*) &requete, sizeof(requete.contenu), 0) == -1) {
+    perror("erreur send");
+    exit(1);
   }
+  printf("%i\n", msgid);
 
   //  .....
   

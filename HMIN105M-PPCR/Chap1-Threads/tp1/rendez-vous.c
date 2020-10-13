@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }     
   pthread_t threads[atoi(argv[1])];
-  pthread_cond_t cond;
+  // pthread_cond_t cond;
   struct paramsFonctionThread* params = malloc(sizeof(struct paramsFonctionThread));
   params->n = atoi(argv[1]);
   params->count = 0;

@@ -16,8 +16,8 @@ void* activity(void* p) {
   // fprintf(stderr, "activity %i\n", params->id);
 
   for (int i = 0; i < *params->lenght; i++) {
-    // zone courante <= task
-    if (params->zones[i] <= params->id) {
+    
+    if (params->zones[i] <= params->id) { // zone courante <= task
       pthread_mutex_lock(&mutex);
       
       if (params->zones[i] < params->id) { 
@@ -34,7 +34,6 @@ void* activity(void* p) {
     pthread_cond_broadcast(&cond);
     pthread_mutex_unlock(&mutex);
   } 
-  // ...
   return 0;
 } 
 
@@ -63,7 +62,6 @@ int main(int argc, char* argv[]) {
   for (int i = 0; i < n; i++) {
     pthread_join(threads[i], NULL);
   } 
-  // ...
 
   return 0;
 }
