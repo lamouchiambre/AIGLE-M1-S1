@@ -1,0 +1,93 @@
+Quels sont les variables vivantes à l’entrée du programme sachant qu’à la
+fin du programme, les variables vivantes sont d, k, et j ?
+
+{j, k}
+g = j + 12;
+{j, g, k}
+h = k - 1;
+{j, g, h}
+f = g * h;
+{f, j}
+e = j + 8;
+{e, f, j}
+m = j + 16;
+{m, e, f}
+b = f;
+{b, m, e}
+c = e + 8;
+{b, m, c}
+d = c;
+{d, b, m}
+k = m + 4;
+{d, k, b}
+j = b
+{d, k, j}
+
+Faire l’analyse de durée des variables de cette procédure (partir d’un
+ensemble vide de variables vivantes en fin de procédure).
+
+
+procedure f (1)
+
+var %0; %1; %2; %3; %4; %5; %6
+
+entry f11
+
+f11 : newframe -> f10
+
+f10 : move %6, $ra -> f9
+
+f9 : move %5, $s1 -> f8
+
+f8 : move %4, $s0 -> f7
+
+f7 : move %0, $a0 -> f6
+
+{
+f6 : li %1, 0 -> f5
+
+{$ra, %4, %r5, %1, %0}
+f5 : blez %0 -> f4, f3
+
+{$ra, %4, %r5, %1, %0}
+f3 : addiu %3, %0, -1 -> f2
+
+{$ra, %4, %r5, %1, %0, %3}
+f2 : j -> f20
+
+{$ra, %4, %r5, %1, %0, %3}
+f20 : move $a0, %3 -> f19
+
+{$ra, %4, %r5, %1, %0}
+f19 : call f(1) -> f18
+
+{$ra, %4, %r5, %1, %0}
+f18 : move %2, $v0 -> f1
+
+{$ra, %4, %r5, %1, %0, %2}
+f1 : mul %1, %0, %2 -> f0
+
+{$ra, %4, %r5, %1}
+f0 : j -> f17
+
+{$ra, %4, %r5, %1}
+f17 : move $v0, %1 -> f16
+
+{$ra, %4, %r5, %1}
+f16 : move $ra, %6 -> f15
+
+{$ra, %4, %5}
+f15 : move $s1, %5 -> f14
+
+{$ra, %4}
+f14 : move $s0, %4 -> f13
+
+{$ra}
+f13 : delframe -> f12
+
+{$ra}
+f12 : jr $ra
+
+{}
+f4 : li %1, 1 -> f0
+{}
