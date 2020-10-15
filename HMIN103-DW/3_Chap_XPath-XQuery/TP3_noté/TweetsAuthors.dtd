@@ -30,7 +30,7 @@
 		<!ATTLIST Author id_author ID #REQUIRED>
 		<!ELEMENT Name (#PCDATA)>
 		<!ELEMENT Profil (Description, UserPicture, Followers, Suscribers)>
-			<!ATTLIST Profil url #REQUIRED>
+			<!ATTLIST Profil url CDATA #REQUIRED>
 			<!ELEMENT Description (#PCDATA)>
 			<!ELEMENT UserPicture (#PCDATA)>
 			<!ELEMENT Followers (#PCDATA)>
