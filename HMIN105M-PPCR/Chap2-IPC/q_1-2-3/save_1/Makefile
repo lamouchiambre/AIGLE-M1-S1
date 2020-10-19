@@ -1,5 +1,5 @@
 GPP = gcc
-SRC = client.c serveur.c
+SRC = client.c calculator.c functions.c
 OBJ = $(SRC:%.c=%.o)
 EXE = exec
 
