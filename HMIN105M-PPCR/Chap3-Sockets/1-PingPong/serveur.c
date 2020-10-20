@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <string.h>
+#include <arpa/inet.h>
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -62,7 +64,7 @@ int main(int argc, char *argv[]) {
     close(ds);
     exit(1);
   }
-  printf("Serveur: le client %s:%d est connecté  \n", inet_ntoa(adCv.sin_addr), adCv.sin_port);
+  printf("Serveur: le client %s:%d est connecté\n", inet_ntoa(adCv.sin_addr), adCv.sin_port);
 
   /* Etape 5 : réception d'un message de type chaîne de caractères */
   char buffer[500];
@@ -86,11 +88,55 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  /* Etape 7 : fermeture de la socket du client */ 
+  /* PONG */
+
+  // /* Etape 7 : envoyer une demande de connexion au serveur.*/
+  // int lgAdr = sizeof(struct sockaddr_in);
+  // int conn = connect(ds, (struct sockaddr*) &server, lgAdr);
+  // if (conn < 0) {
+  //   perror("Client: pb au connect :");
+  //   close(ds);
+  //   exit(1); 
+  // }
+  // printf("Client: demande de connexion reussie \n");
+
+  /* Etape 8 : envoyer un message au serveur. Ce message est une chaîne de caractères saisie au clavier. Vous pouvez utiliser une autre fonction pour la saisie. */
+  printf("Saisir un message à envoyer (moins de 200 caracteres) \n");
+  char m[202]; 
+  fgets(m, sizeof(m), stdin);
+  m[strlen(m)-1]  = '\0'; // je retire le saut de ligne                   
+  
+  int snd2 = send(ds, m, sizeof(m), 0);
+  if (snd2 == -1) {
+    perror("Client: error send");
+    close(ds);
+    exit(1);
+  }
+  printf("Client: j'ai déposé %d octets \n", snd2);
+    
+  /* Etape 9 : reception d'une réponse du serveur. La réponse est un
+  entier représentant le nombre d'octets du message que le serveur
+  a effectivement reçu à l'étape précédente. Pour cet exercice,
+  faire un seul appel de la fonction recv(..). */
+  printf("Client: envoi fait, j'attends la reponse du serveur \n");
+    
+  int reponse[200];
+  int rcv2 = recv(ds, reponse, sizeof(reponse), 0);
+  if (rcv2 <= 0) {
+	  perror("Erreur");
+	  close(ds);
+	  exit(1);
+  }
+    
+  /* Etape 10 : je compare le nombre d'octets déposés (envoyés) avec
+    la valeur reçue. L'objectif est d'avoir la même valeur. */ 
+  printf("Client: j'ai envoyé %d octets et le serveur me répond qu'il a reçu : %d octets \n", snd2, rcv) ;
+
+  /* Etape 11 : fermeture de la socket du client */ 
   printf("Serveur: fin du dialogue avec le client\n");
   close(dsCv);
   
-  // Etape 8 : pour cet exercice, je ne traite qu'un client, donc, je termine proprement.
+  // Etape 12 : pour cet exercice, je ne traite qu'un client, donc, je termine proprement.
   close(ds);
   printf("Serveur: je termine\n");
 }
