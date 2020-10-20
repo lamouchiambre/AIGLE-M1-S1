@@ -1,6 +1,7 @@
 #include "functions.h"
 
-int main (int argc, char * argv[]){
+int main (int argc, char * argv[]) {
+
   assert(argc == 1);
 
   struct requete requete;
@@ -21,22 +22,14 @@ int main (int argc, char * argv[]){
   printf("msgget ok\n");
   
   while (1) { 
-    // printf("getpid(): %i\n", getpid());
-    if ((msgrcv(msgid, &requete, sizeof(requete), (long) '+', 0)) == -1) {
+    if ((msgrcv(msgid, &requete, sizeof(requete), (long) '*', 0)) == -1) {
       perror("error msgrcv");
       exit(1);
     } 
     printf("msgrcv ok\n");
 
-    // result.etiq = ;
     result.contRes.nb = calculation(requete.cont.nb1, requete.cont.nb2, requete.cont.op);
     printf("Résultat: %f\n", result.contRes.nb);
-
-    // if (msgsnd(msgid, &result, sizeof(result.contRes), 0) == -1) {
-    //   perror("error msgsnd");
-    //   exit(1);
-    // } 
-    // printf("msgsnd ok\n");
   } 
 
   if (msgctl(msgid, IPC_RMID, NULL) != 0) {

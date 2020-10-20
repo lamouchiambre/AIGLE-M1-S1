@@ -12,15 +12,6 @@
 #include <pthread.h> 
 #include <assert.h> 
 
-#define RED "\x1B[31m"
-#define GRN "\x1B[32m"
-#define YEL "\x1B[33m"
-#define BLU "\x1B[34m"
-#define MAG "\x1B[35m"
-#define CYN "\x1B[36m"
-#define WHT "\x1B[37m"
-#define RESET "\x1B[0m"
-
 // structure des requetes 
 struct requete {
   long etiq; // 1
@@ -29,7 +20,6 @@ struct requete {
     float nb1;
     float nb2;
   } cont;
-  pid_t clientPID;
 } req;
 
 // structure des resultats
@@ -40,7 +30,7 @@ struct result {
   } contRes;
 } res;
 
-void calculation_init(float *a, float *b, char *c);
+// void calculation_init(float *a, float *b, char *c);
 float calculation(float a, float b, char operator); 
 
 #endif 

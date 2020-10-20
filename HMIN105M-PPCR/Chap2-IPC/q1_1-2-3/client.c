@@ -1,6 +1,6 @@
 #include "functions.h"
 
-int main (int argc, char * argv[]){
+int main (int argc, char * argv[]) {
 
   assert(argc == 4); // ./client + nb1 nb2
 
@@ -24,24 +24,12 @@ int main (int argc, char * argv[]){
     exit(1);
   } 
   printf("msgget ok\n");
-  
-  // printf("calculation_init\n");
-  // calculation_init(&requete.cont.nb1, &requete.cont.nb2, &requete.cont.op);
 
   if ((msgsnd(msgid, &requete, sizeof(requete.cont), 0)) == -1) {
     perror("error msgsnd");
     exit(1);
   } 
   printf("msgsnd ok.\n");
-  
-  // if (msgrcv(msgid, &result, sizeof(result.contRes), requete.etiq, 0) == -1) {
-  //   perror("error msgrcv");
-  //   exit(1);
-  // } 
-  // printf("msgrcv ok.\n");
-  // printf("Result received from the calculator : %f\n", result.contRes.nb);
-
-
 
   printf("end\n");
   return 0;
