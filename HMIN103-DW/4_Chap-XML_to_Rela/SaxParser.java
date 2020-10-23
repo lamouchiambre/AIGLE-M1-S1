@@ -69,35 +69,6 @@ import java.io.PrintWriter;
  * The present code is drawn from SAXLocalNameCount.java (2002-04-18 by Edwin Goei)
  */
 
-class Node {
-	static int compteur = 0;
-	int begin;
-	int end;
-	int parent;
-	String tag;
-	String type;
-	String text;
-	
-	public Node() {
-		this.begin = 0;
-		this.end = 0;
-		this.parent = 0;
-		this.tag = "";
-		this.type = "";
-		this.text = "";
-	}
-	public Node() {
-		this.begin = 0;
-		this.end = 0;
-		this.parent = 0;
-		this.tag = "";
-		this.type = "";
-		this.text = "";
-	}
-	
-	
-}
-
 public class SaxParser extends DefaultHandler {
     /** Constants used for JAXP 1.2 */
     static final String JAXP_SCHEMA_LANGUAGE =
@@ -110,29 +81,77 @@ public class SaxParser extends DefaultHandler {
     /** A Hashtable with tag names as keys and Integers as values */
     private Hashtable tags;
     
-
+    // ---
+	Stack<Node> nodes;
+	int _compteur;
+	int _begin;
+	int _end;
+	int _parent;
+    
+    class Node {
+    	int begin;
+    	int end;
+    	int parent;
+    	String tag;
+    	String type;
+    	
+    	public Node(int begin, int end, int parent, String tag, String type) {
+    		this.begin = begin;
+    		this.end = end;
+    		this.parent = parent;
+    		this.tag = tag;
+    		this.type = type;
+    	}
+    	
+    	void incrCompteur() {
+    		_compteur++;
+    	}
+    	
+    	@Override
+    	public String toString() {
+    		return "INSERT INTO NODE (begin, end, parent, tag, nodtyp) VALUES("
+    				+ this.begin + ", "
+    				+ this.end + ", "
+    				+ this.parent + ", "
+    				+ this.tag + ", "
+    				+ this.type + ")";
+    	}
+    } // Fin Class Node
+    // ---
+    
     // Parser calls this once at the beginning of a document
     public void startDocument() throws SAXException {
         tags = new Hashtable();
-        
+        nodes = new Stack<Node>();
+    	_compteur = 0;
+    	_begin = 0;
+    	_end = 0;
+    	_parent = 0;
     }
 
     // Parser calls this for each opening of an element in a document
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) throws SAXException {
     	System.out.println("starting an element " + localName);
-    	nodes.add(new Node());
-    	
+ 	
+    	Node n = new Node(_begin, _end, _parent, "", "");
+    	nodes.push(n);
+    
+       	System.out.println(n);
     }
     
     // Parser calls this for each end of an element in a document
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
     	System.out.println("ending an element " + localName);
-    	
-        // INSERT INTO NODE (begin,end,parent,tag,nodtyp) VALUES(1,16,null,’racine’,’element’)
+    	System.out.println();
+        // INSERT INTO NODE (begin, end, parent, tag, nodtyp) VALUES(1, 16, null, ’racine’, ’element’)
+    	nodes.peek().end = _compteur;
+//    	System.out.println(nodes.peek());
+    	nodes.pop();
     }
     
     // Parser calls this once after parsing a document
     public void endDocument() throws SAXException {
+    	System.out.println();
     	System.out.println("Bye bye");
     }
 
