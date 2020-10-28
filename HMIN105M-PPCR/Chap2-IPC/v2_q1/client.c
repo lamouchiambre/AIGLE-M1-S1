@@ -9,7 +9,6 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-// structure des requetes 
 typedef struct requete {
   long etiq; // 1
   struct contenuRequete {
@@ -19,7 +18,6 @@ typedef struct requete {
   } cont;
 } msg_req;
 
-// structure des resultats
 typedef struct result {
   long etiq;
   struct contenuResult {
