@@ -9,7 +9,6 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 
-// structure des requetes 
 typedef struct requete {
   long etiq; // 1
   struct contenuRequete {
@@ -19,7 +18,6 @@ typedef struct requete {
   } cont;
 } msg_req;
 
-// structure des resultats
 typedef struct result {
   long etiq;
   struct contenuResult {
@@ -50,26 +48,26 @@ int main(int argc, char* argv[]) {
     perror("msgget");
     exit(1);
   } 
-  printf("msgget ok\n");
+  printf("msgget ok. msg_id : %i\n", msg_id);
 
   while (1) {
     printf("Calcul : ");
-    scanf("%d %c %d", &req.cont.nb1, &req.cont.op, &req.cont.nb2);
-    printf("Envoi de la requete : %d %c %d d'etiquette %ld dans la file d'id %d...\n", req.cont.nb1, req.cont.op, req.cont.nb2, req.etiq, key);
+    scanf("%e %c %e", &req.cont.nb1, &req.cont.op, &req.cont.nb2);
+    printf("Envoi de la requete : %f %c %f d'etiquette %ld dans la file d'id %d...\n", req.cont.nb1, req.cont.op, req.cont.nb2, req.etiq, key);
 
-    if (msgsnd(key, &req, sizeof(req), 0) == -1) {
+    if (msgsnd(msg_id, &req, sizeof(req), 0) == -1) {
       perror("msgsnd");
       exit(1);
     } 
     printf("msgsnd ok\n");
 
-    if (msgrcv(key, &req, sizeof(req), req.etiq, 0) == -1) {
+    if (msgrcv(msg_id, &res, sizeof(res), res.etiq, 0) == -1) {
       perror("msgrcv");
       exit(1);
     } 
     printf("msgrcv ok\n");
 
-    printf("Resultat : %d\n", res.contRes.nb);
+    printf("Resultat : %f\n", res.contRes.nb);
   }
 
   return 0;
