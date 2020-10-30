@@ -26,12 +26,14 @@ typedef struct result {
 } msg_res;
 
 // Evalue le calcule et reponde a l'envoyeur:
-int add(msg_req* req, int key){
+int add(msg_req* req, int msg_id){
   msg_res res;
   res.etiq = req->etiq;
   res.contRes.nb = req->cont.nb1 + req->cont.nb2;
+  // printf("res.etiq : %li\n", res.etiq);
+  // printf("res.contRes.nb = req->cont.nb1 + req->cont.nb2 : %f = %f + %f\n", req->cont.nb1 + req->cont.nb2, req->cont.nb1, req->cont.nb2);
 
-  if (msgsnd(key, &res, sizeof(res), 0) == -1) {
+  if (msgsnd(msg_id, &res, sizeof(res), 0) == -1) {
     perror("msgsnd");
     exit(1);
   }
@@ -39,12 +41,12 @@ int add(msg_req* req, int key){
   return res.contRes.nb;
 }
 
-int sub(msg_req* req, int key){
+int sub(msg_req* req, int msg_id){
   msg_res res;
   res.etiq = req->etiq;
   res.contRes.nb = req->cont.nb1 - req->cont.nb2;
 
-  if (msgsnd(key, &res, sizeof(res), 0) == -1) {
+  if (msgsnd(msg_id, &res, sizeof(res), 0) == -1) {
     perror("msgsnd");
     exit(1);
   }
@@ -52,12 +54,12 @@ int sub(msg_req* req, int key){
   return res.contRes.nb;
 }
 
-int mult(msg_req* req, int key){
+int mult(msg_req* req, int msg_id){
   msg_res res;
   res.etiq = req->etiq;
   res.contRes.nb = req->cont.nb1 * req->cont.nb2;
 
-  if (msgsnd(key, &res, sizeof(res), 0) == -1) {
+  if (msgsnd(msg_id, &res, sizeof(res), 0) == -1) {
     perror("msgsnd");
     exit(1);
   }
@@ -65,12 +67,12 @@ int mult(msg_req* req, int key){
   return res.contRes.nb;
 }
 
-int divi(msg_req* req, int key){
+int divi(msg_req* req, int msg_id){
   msg_res res;
   res.etiq = req->etiq;
   res.contRes.nb = req->cont.nb1 / req->cont.nb2;
 
-  if (msgsnd(key, &res, sizeof(res), 0) == -1) {
+  if (msgsnd(msg_id, &res, sizeof(res), 0) == -1) {
     perror("msgsnd");
     exit(1);
   }
@@ -78,19 +80,19 @@ int divi(msg_req* req, int key){
   return res.contRes.nb;
 }
 
-int eval(msg_req* req, int etiq){
+int eval(msg_req* req, int msg_id){
   switch (req->cont.op) {
     case '+':
-      return add(req, etiq);
+      return add(req, msg_id);
       break;
     case '-':
-      return sub(req, etiq);
+      return sub(req, msg_id);
       break;
     case '*':
-      return mult(req, etiq);
+      return mult(req, msg_id);
       break;
     case '/':
-      return divi(req, etiq);
+      return divi(req, msg_id);
       break;
     default:
       printf("Type de calcul inconnue !\n");
@@ -114,25 +116,25 @@ int main() {
     perror("msgget");
     exit(1);
   } 
-  printf("msgget ok\n");
+  printf("msgget ok. msg_id : %i\n", msg_id);
   
   msg_req req;
   printf("Creation de la file de message...\n");
-  printf("ID FILE : %d\n", key);
+  printf("ID FILE : %d\n", msg_id);
   printf("Creation des calculatrices...\n");
     
   while (1) {
-    if (msgrcv(key, &req, sizeof(req), 0, 0) == -1) {
+    if (msgrcv(msg_id, &req, sizeof(req), 0, 0) == -1) {
       perror("msgrcv");
       exit(1);
+    } else {
+      result = eval(&req, msg_id);
+      printf("Requete + reçu : %f %c %f\n", req.cont.nb1, (char)req.cont.op, req.cont.nb2);
+      printf("Resultat : %d\n", result);
     } 
-
-    result = eval(&req, req.etiq);
-    printf("Requete + reçu : %f %c %f\n", req.cont.nb1, (char)req.cont.op, req.cont.nb2);
-    printf("Resultat : %d\n", result);
   }
 
   printf("Destruction de la file de message...\n");
-  msgctl(key, IPC_RMID, NULL);
+  msgctl(msg_id, IPC_RMID, NULL);
 	return 0;
 }
