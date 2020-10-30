@@ -34,43 +34,43 @@ int main(int argc, char* argv[]) {
     exit(1);
   } 
 
-  msg_req req;
-  msg_res res;
-  req.etiq = getpid();
+  //msg_req req;
+  //msg_res res;
+  //req.etiq = getpid();
 
-  key_t key = ftok("key.txt", 'z'); 
-  if (key == -1) {
-    perror("ftok");
-    exit(1);
-  } 
-  printf("ftok ok\n");
+  //key_t key = ftok("key.txt", 'z'); 
+  //if (key == -1) {
+  //  perror("ftok");
+  //  exit(1);
+  //} 
+  //printf("ftok ok\n");
 
-  int msg_id = msgget(key, IPC_CREAT | 0666);
-  if (msg_id == -1) {
-    perror("msgget");
-    exit(1);
-  } 
-  printf("msgget ok\n");
+  //int msg_id = msgget(key, IPC_CREAT | 0666);
+  //if (msg_id == -1) {
+  //  perror("msgget");
+  //  exit(1);
+  //} 
+  //printf("msgget ok\n");
 
-  while (1) {
-    printf("Calcul : ");
-    scanf("%d %c %d", &req.cont.nb1, &req.cont.op, &req.cont.nb2);
-    printf("Envoi de la requete : %d %c %d d'etiquette %ld dans la file d'id %d...\n", req.cont.nb1, req.cont.op, req.cont.nb2, req.etiq, key);
+  //while (1) {
+  //  printf("Calcul : ");
+  //  scanf("%d %c %d", &req.cont.nb1, &req.cont.op, &req.cont.nb2);
+  //  printf("Envoi de la requete : %d %c %d d'etiquette %ld dans la file d'id %d...\n", req.cont.nb1, req.cont.op, req.cont.nb2, req.etiq, key);
 
-    if (msgsnd(key, &req, sizeof(req), 0) == -1) {
-      perror("msgsnd");
-      exit(1);
-    } 
-    printf("msgsnd ok\n");
+  //  if (msgsnd(key, &req, sizeof(req), 0) == -1) {
+  //    perror("msgsnd");
+  //    exit(1);
+  //  } 
+  //  printf("msgsnd ok\n");
 
-    if (msgrcv(key, &req, sizeof(req), req.etiq, 0) == -1) {
-      perror("msgrcv");
-      exit(1);
-    } 
-    printf("msgrcv ok\n");
+  //  if (msgrcv(key, &req, sizeof(req), req.etiq, 0) == -1) {
+  //    perror("msgrcv");
+  //    exit(1);
+  //  } 
+  //  printf("msgrcv ok\n");
 
-    printf("Resultat : %d\n", res.contRes.nb);
-  }
+  //  printf("Resultat : %d\n", res.contRes.nb);
+  //}
 
   return 0;
 } 

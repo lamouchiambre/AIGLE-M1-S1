@@ -1,10 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\HMIN105M - Principes de la programmation concurrente et répartie",
-    "\\HMIN105M - Principes de la programmation concurrente et répartie\\Chapitre 0 - Introduction",
-    "\\HMIN105M - Principes de la programmation concurrente et répartie\\Chapitre 0 - Introduction\\tp0"
+    "\\HMIN105M-PPCR",
+    "\\HMIN105M-PPCR\\Chap2-IPC",
+    "\\HMIN105M-PPCR\\Chap2-IPC\\v2_q1_1-2-3"
   ],
-  "SelectedNode": "\\HMIN105M - Principes de la programmation concurrente et répartie\\Chapitre 0 - Introduction\\tp0\\exo1.cpp",
+  "SelectedNode": "\\HMIN105M-PPCR\\Chap2-IPC\\v2_q1_1-2-3",
   "PreviewInSolutionExplorer": false
 }
