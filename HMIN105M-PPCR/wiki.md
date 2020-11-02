@@ -1,0 +1,1 @@
+## Mémoires Partagées#### Création`int shmget(key_t key, size_t size, int shmflg);`#### Attachement`void *shmat(int shmid, const void *shmaddr, int shmflg); verrify les erreur avec (void*)-1`#### Détachement`int shmdt(const void *shmaddr);`#### Destruction`int shmctl(int shmid, int cmd, struct shmid_ds *buf);`
