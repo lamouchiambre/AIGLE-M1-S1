@@ -1,0 +1,9 @@
+1. Montrer qu’il est nécessaire de mettre en place une exclusion mutuelle entre l’ensemble des
+processus (bornes et sortie de voitures).
+
+> Vu que borne et sortie peuvent modifier le compteur décrivant le nombre de places libres. Il est nécessaire d'avoir recourt à un mutex.
+
+2. Proposer une solution à l’aide de sémaphores et écrire le schéma algorithmique détaillé de
+l’ensemble des programmes de la simulation.
+
+
