@@ -40,3 +40,68 @@
 ; (1 (2) (3) 4) -> 5
 
 ; 4. fonctions sur les listes plates
+
+(define list1 '(1 2 3 1 4))
+
+(define (member x l)
+  (cond [(equal? l '()) '()]
+        [(equal? (car l) x) l]
+        [#t (member x (cdr l))] ))
+
+(define (lengh l)
+  (cond [(equal? l '()) 0]
+        [#t (+ 1 (lengh (cdr l)))] ))
+
+(define (last l)
+  (cond [(equal? l '()) '()]
+        [(equal? (cdr l) '()) (car l)]
+        [#t (last (cdr l))] ))
+
+(define (makelist n)
+  (cond [(= n 0) '()]
+        [#t (cons n (makelist (- n 1)))] ))
+
+(define (copylist l)
+  (cond [(equal? l '()) '()]
+        [#t (cons (car l) (cdr l))] ))
+
+(define (remove x l)
+  (cond [(equal? l '()) '()]
+        [(equal? (car l) x) (remove x (cdr l))]
+        [#t (cons (car l) (remove x (cdr l)))] ))
+
+(define (remove2 x l)
+  (cond [(equal? l '()) '()]
+        [(equal? (car l) x) (cdr l)]
+        [#t (cons (car l) (remove2 x (cdr l)))] ))
+
+(define (append l1 l2)
+  (cond [(equal? l1 '()) l2]
+        [(equal? l2 '()) l1]
+        [#t (cons (car l1) (append (cdr l1) l2))] ))
+
+(define (adjoin x l)
+  (cond [(not (equal? (member x l) '())) l]
+        [#t (cons x l)] ))
+
+; 5. fonctions sur les arbres binaires
+
+(define t1 '(1 (2 3) 4))
+(define t2 '(1 (2 3) 4 ((5 6) 1)))
+
+(define (size t)
+  (cond [(equal? t '()) 0]
+        [(pair? (car t)) (+ (size (car t)) (size (cdr t)))]
+        [(pair? (cdr t)) (+ 1 (size (cdr t)))]
+        [#t (+ 1 (size (cdr t)))] ))
+
+(define (copytree t)
+  (cond [(equal? t '()) '()]
+        [(pair? (car t)) (list (car t) (copytree (cdr t)))]
+        [#t (cons (car t) (cdr t))] ))
+
+(define (subst x y t)
+  (cond [(equal? t '()) '()]
+        [(equal? (car t) x) (cons y (subst x y (cdr t)))]
+        ;[(equal? (cdr t) x) (cons (subst x y (car t)) y)]
+        [#t (cons (car t) (subst x y (cdr t)))] ))
