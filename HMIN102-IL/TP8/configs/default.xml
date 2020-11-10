@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
 	<feature automatic="selected" name="il_tp8"/>
-	<feature name="Graphe"/>
+	<feature automatic="selected" name="Graph"/>
+	<feature automatic="selected" name="node"/>
+	<feature manual="selected" name="boxShape"/>
+	<feature name="ellipseShape"/>
+	<feature automatic="selected" name="edge"/>
+	<feature manual="selected" name="simpleLine"/>
+	<feature automatic="unselected" name="filledArrow"/>
+	<feature automatic="unselected" name="arrow"/>
+	<feature automatic="selected" name="color"/>
+	<feature manual="selected" name="colorRed"/>
+	<feature name="colorGreen"/>
+	<feature automatic="unselected" name="oriented"/>
 </configuration>

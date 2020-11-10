@@ -10,7 +10,46 @@
 	</properties>
 	<struct>
 		<and abstract="true" mandatory="true" name="il_tp8">
-			<feature name="Graphe"/>
+			<and abstract="true" mandatory="true" name="Graph">
+				<graphics key="collapsed" value="false"/>
+				<or mandatory="true" name="node">
+					<graphics key="collapsed" value="false"/>
+					<feature name="boxShape"/>
+					<feature name="ellipseShape"/>
+				</or>
+				<alt mandatory="true" name="edge">
+					<feature name="simpleLine"/>
+					<feature name="filledArrow"/>
+					<feature name="arrow"/>
+				</alt>
+				<or name="color">
+					<feature name="colorRed"/>
+					<feature name="colorGreen"/>
+				</or>
+				<feature name="oriented"/>
+			</and>
 		</and>
 	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>arrow</var>
+				<var>oriented</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>filledArrow</var>
+				<var>oriented</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>oriented</var>
+				<not>
+					<var>simpleLine</var>
+				</not>
+			</imp>
+		</rule>
+	</constraints>
 </featureModel>

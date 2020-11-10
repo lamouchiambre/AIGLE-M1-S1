@@ -3,7 +3,30 @@ Ensuite, dÃ©finissez un feature model reprÃ©sentant ces informations. Vous utili
 
 Listes des features :
 - Sommet [mandatory] (rectangulaire ou elliptique) Or
-- ArÃªtes [mandatory] (NonOrientÃ© ou OrientÃ©)
-- OrientÃ© [mandatory] (Forme flÃ©chÃ©)
-- Forme flÃ©chÃ© [mandatory] (pointe fermÃ© ou pointe en v)
+- Aretes [mandatory] (NonOriente ou Oriente)
+- Oriente [mandatory] (Forme flechee)
+- Forme flechee [mandatory] (pointe fermee ou pointe en v)
 - Color (vert ou rouge)
+
+Question 4 : Quelles sont les features de votre modèle représentant le coeur de la ligne de produits ?
+
+Les features coeurs sont "node" et "edge".
+Ce sont les caractéristiques présentes dans toutes les configurations valides.
+
+Question 5 : Ajoutez une contrainte d’implication depuis une feature obligatoire vers une feature
+optionnelle. Quel est le problème de modélisation détecté ?
+
+Rajoute une contrainte d'une feature obligatoire vers optionnelle par exemle
+node => color
+On a alors un cas de faux optionnel pour la feature color.
+
+Question 6 : Ajoutez une contrainte d’implication depuis une feature obligatoire vers une feature
+appartenant à un groupe XOR. Quel est le problème de modélisation détecté ?
+
+On rajoute node => arrow
+On détecte alors des "dead features" : simpleline et filledArrow ne peuvent plus être choisies elle sont "mortes"
+
+Question 8 : Combien de variantes de "générateurs de graphes" différentes pouvez vous dériver avec
+ce modèle ?
+
+36 combinaisons possible
