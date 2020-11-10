@@ -1,0 +1,9 @@
+Question 2 : À partir du cahier des charges suivant, identifiez les features et leur contraintes. 
+Ensuite, définissez un feature model représentant ces informations. Vous utiliserez l’éditeur graphique de FeatureIDE.
+
+Listes des features :
+- Sommet [mandatory] (rectangulaire ou elliptique) Or
+- Arêtes [mandatory] (NonOrienté ou Orienté)
+- Orienté [mandatory] (Forme fléché)
+- Forme fléché [mandatory] (pointe fermé ou pointe en v)
+- Color (vert ou rouge)
