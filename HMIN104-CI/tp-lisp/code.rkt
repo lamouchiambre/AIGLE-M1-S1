@@ -86,6 +86,7 @@
 
 ; 5. fonctions sur les arbres binaires
 
+(define t0 '(1 2 3 4))
 (define t1 '(1 (2 3) 4))
 (define t2 '(1 (2 3) 4 ((5 6) 1)))
 
@@ -105,3 +106,27 @@
         [(equal? (car t) x) (cons y (subst x y (cdr t)))]
         ;[(equal? (cdr t) x) (cons (subst x y (car t)) y)]
         [#t (cons (car t) (subst x y (cdr t)))] ))
+
+(define (tree-leaves t)
+  (cond [(equal? t '()) '()]
+        [(not (pair? (car t))) (cons (car t) (tree-leaves (cdr t)))]
+        [#t (append (tree-leaves (car t)) (tree-leaves (cdr t)))] ))
+
+; 6. test d'égalité
+
+(define (test-egalite1 n)
+  (print (= (fact n) (fact n))) )
+
+;(define (test-egalite2 n)                  ; "eq" non reconnu
+ ;(print (eq (fact n) (fact n))) )
+
+;(define (test-egalite3 n)                  ; "eql" non reconnu
+  ;(print (eql (fact n) (fact n))) )
+
+(define (test-egalite4 n)
+  (print (equal? (fact n) (fact n))) )
+
+; 7. récusion terminale et enveloppée
+
+;(define (copylist2 l)
+;  (cond [(equal? l) l]))
