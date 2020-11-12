@@ -6,14 +6,14 @@
 #include <sys/shm.h>
 #include <sys/types.h>
 
-typedef struct parking {
-  int places;
-} parking;
+// typedef struct parking {
+//   int places;
+// } parking;
 
 int main(int argc, char* argv[]) {
 
-  parking park;
-  park.places = 40;
+  char* file = "parking";
+  int places = atoi(argv[1]);
   
   key_t key = ftok("key.txt", 'z');
   if (key == -1) {

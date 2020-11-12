@@ -26,7 +26,7 @@ int parking_init(char** filename, int places) {
 	int sh_id = shmget(key, sizeof(int)*2, 0666 | IPC_CREAT);
 	printf("Le segment est %i\n", sh_id);
     if (sh_id == -1) {
-        perror("shmget");
+        perror("shmget ");
         exit(1);
     }
 

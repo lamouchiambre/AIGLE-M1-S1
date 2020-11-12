@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     	error = semop(sem_id, &op, 1);
 
         printf("j'attends...\n");
-        sleep(2);
+        sleep(1);
     }
 
 	// vu la boucle infinie, on ne passe jamais là... mais pour plus tard...
