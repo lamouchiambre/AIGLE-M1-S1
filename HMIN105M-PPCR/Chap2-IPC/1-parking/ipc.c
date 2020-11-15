@@ -40,11 +40,16 @@ int main(int argc, char* argv[]) {
     exit(1);
   } 
 
+	// affecte le nombre de places à la variable partagée
+  nb_places[0] = places;
+  nb_places[1] = places;
+  printf("Le nombre de places libres est de %i sur %i\n", nb_places[0],nb_places[1]);
+
+  printf("Détachement du segment mémoire partagé\n");
   if (shmdt((void*)nb_places) == -1) {
     perror("shmdt");
     exit(1);
   } 
-  printf("shmdt ok\n");
 
   return 0;
 } 
