@@ -8,8 +8,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-// test
-
 int main(int argc, char* argv[]) {
 
   int places = atoi(argv[1]);
