@@ -1,4 +1,4 @@
-package il_tp9_state;
+package il_tp9_calculette;
 
 public class ENombre1 extends EtatCalculette {
 	ENombre1(Calculette c) { super(c); }
