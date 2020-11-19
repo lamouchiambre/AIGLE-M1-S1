@@ -36,6 +36,7 @@ public class WordCount {
 		 * 's' spécifie que la valeur sera formattée comme une chaine de caractère (String).
 		 * '%n' représente un saut de ligne.
 		 * '%6$s' affiche la pile d'exécution en cas d'exception.
+		 *Pignon de pain 
 		 */
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n%6$s");
 
@@ -57,7 +58,8 @@ public class WordCount {
 
 			// Une méthode pour créer des messages de log
 //			LOG.info("MESSAGE INFO");
-
+			LOG.info("test");
+			
 			String[] words = line.split("\\s+");
 
 			// La ligne est vide : on s'arrête
@@ -69,16 +71,19 @@ public class WordCount {
 		}
 	}
 
+//
 	public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		public void reduce(Text key, Iterable<IntWritable> values, Context context)
 				throws IOException, InterruptedException {
 			int sum = 0;
 
-			for (IntWritable val : values)
+			for (IntWritable val : values)//  la val est de type intWritable
 				sum += val.get();
-
+//exercice 1: (filtrage)seulemnt les mots nbc occu sup ou egale a 2 soient affich�s
+//			if (sum >= 2) {
 			context.write(key, new IntWritable(sum));
+//			}
 		}
 	}
 
@@ -87,7 +92,6 @@ public class WordCount {
 		Configuration conf = new Configuration();
 		conf.set("fs.file.impl", "com.conga.services.hadoop.patch.HADOOP_7682.WinLocalFileSystem");
 		
-
 		Job job = new Job(conf, "wordcount");
 
 		job.setOutputKeyClass(Text.class);
