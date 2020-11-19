@@ -66,6 +66,23 @@ public class Join {
 		}
 	}
 
+
+
+//  Indices du Moodle
+	
+//	La jointure doit être réalisée sur l'attribut custkey. 
+//	Voici le schéma des relations dont les lignes sont extraites :
+
+//	ORDERS(orderkey,custkey,orderstatuts,totalprice,orderdate,orderpriority,clerk,ship-priority,comment)
+	
+//	CUSTOMERS(custkey,name,address,nationkey,phone,acctbal,mktsegment,comment)
+
+//	Le programme doit restituer des couples (CUSTOMERS.name,ORDERS.comment)
+
+//	Pour réaliser la jointure il faut à l'avance recopier dans un tableau temporaire 
+//	les valeurs de l'itérateur values dans la méthode REDUCE, 
+//	puis effectuer le parcours avec deux 'for' imbriqués sur ce tableau temporaire
+	
 	public static class Reduce extends Reducer<Text, Text, Text, Text> {
 
 		@Override
