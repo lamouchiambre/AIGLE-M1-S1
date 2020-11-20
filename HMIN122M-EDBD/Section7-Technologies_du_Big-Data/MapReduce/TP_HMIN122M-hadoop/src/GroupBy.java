@@ -86,6 +86,12 @@ public class GroupBy {
 //				String IDproduit = words[13];
 //				DoubleWritable quantite = new DoubleWritable(Double.parseDouble(words[18]));
 //				context.write(new Text(IDcommand + " " +IDproduit), quantite);
+				
+				// 3 et 4 mixé)
+//				String IDcommand = words[2];
+//				String IDproduit = words[13];
+//				DoubleWritable quantite = new DoubleWritable(Double.parseDouble(words[18]));
+//				context.write(new Text(IDcommand), new Text(quantite+" "+IDproduit)); // revoir les types de Reduce
 			}
 		}
 	}

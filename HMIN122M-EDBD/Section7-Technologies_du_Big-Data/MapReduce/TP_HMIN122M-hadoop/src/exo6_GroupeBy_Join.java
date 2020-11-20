@@ -21,10 +21,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class Join {
+public class exo6_GroupeBy_Join {
 	private static final String INPUT_PATH = "input-join/";
 	private static final String OUTPUT_PATH = "output/join-";
-	private static final Logger LOG = Logger.getLogger(Join.class.getName());
+	private static final Logger LOG = Logger.getLogger(exo6_GroupeBy_Join.class.getName());
 
 	static {
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n%6$s");
@@ -40,17 +40,9 @@ public class Join {
 	
 //  -- Indices du Moodle --
 	
-//	La jointure doit être réalisée sur l'attribut custkey. 
-//	Voici le schéma des relations dont les lignes sont extraites :
-
-//	ORDERS(orderkey,custkey,orderstatuts,totalprice,orderdate,orderpriority,clerk,ship-priority,comment) // 9 colonnes
-//	CUSTOMERS(custkey,name,address,nationkey,phone,acctbal,mktsegment,comment) // 8 colonnes
-
-//	Le programme doit restituer des couples (CUSTOMERS.name,ORDERS.comment)
-
-//	Pour réaliser la jointure il faut à l'avance recopier dans un tableau temporaire 
-//	les valeurs de l'itérateur values dans la méthode REDUCE, 
-//	puis effectuer le parcours avec deux 'for' imbriqués sur ce tableau temporaire
+//	Modifiez le programme de l'exercice 5 afin de calculer 
+//  le montant total des achats faits par chaque client.
+//  Le programme doit restituer des couples (CUSTOMERS.name, SUM(totalprice))
 	
 	public static class Map extends Mapper<LongWritable, Text, Text, Text> {
 		private final static String emptyWords[] = { "" };
@@ -66,14 +58,14 @@ public class Join {
 			if (words.length == 9) {
 				// ORDERS
 				String custkey = words[1];
-				String comment = words[8];
-//				LOG.info("O = " + custkey + " " + comment);
-				context.write(new Text(custkey), new Text("O" + comment));
+				String totalprice = words[3];
+				LOG.info(custkey + " " + totalprice);
+				context.write(new Text(custkey), new Text("O" + totalprice));
 			} else {
 				// CUSTOMERS
 				String custkey = words[0];
 				String name = words[1];
-//				LOG.info("C = " + custkey + " " + name);
+				LOG.info(custkey + " " + name);
 				context.write(new Text(custkey), new Text("C" + name));
 			}
 		}
@@ -84,31 +76,40 @@ public class Join {
 		@Override
 		public void reduce(Text key, Iterable<Text> values, Context context)
 				throws IOException, InterruptedException {
-			//ArayList <String> lst=new ArrayList <String>();  
+
 			ArrayList<String> values_copy = new ArrayList<String>();
+			double sum = 0.0;
+			String result = "";
+			String name = "";
+
+			
 			for (Text val : values) {
 				values_copy.add(val.toString());
 			}
-			//LOG.info(values_copy.toString());
-			
-//			Iterable<Text> tab = values;
-//			LOG.info(.toString());
 			
 			for (String a : values_copy) {
-				LOG.info("a = " + a.charAt(0));
+				
 				for (String b : values_copy) {
-					LOG.info("b = " + b.charAt(0));
-					if (a.charAt(0) == 'O' && b.charAt(0) == 'C' ) {
+					
+					if (a.charAt(0) == 'C' && b.charAt(0) == 'O' ) {
+						a = a.substring(1);
+						b = b.substring(1);
+//						LOG.info(b);
+						name = a;
+//						LOG.info(b.substring(1));
+//						double tmp = Double.parseDouble(b);
+						sum += Double.parseDouble(b);
+//						LOG.info(String.valueOf(tmp));
+//						LOG.info(String.valueOf(sum));
 						
-						String result = a.toString() + " " + b.toString();
-						//LOG.info(result);
-						LOG.info("boucle if");
-						context.write(key, new Text(result));
+						// Name + TotalPrice
+						result = a.substring(1) + " " + Double.parseDouble(b.substring(1));
+				        context.write(key, new Text(result));		
 					}
-					//System.out.println( value );
-				}
-	            
-	        }
+					
+				}	
+							 
+			}	
 		}
 	}
 
