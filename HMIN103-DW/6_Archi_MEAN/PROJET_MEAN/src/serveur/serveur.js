@@ -18,11 +18,13 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     let db = client.db("SUPERVENTES");
     
     /* Liste des produits */
-    app.get("/produits", (req,res) => {
+    app.get("/produits", (req, res) => {
         console.log("/produits");
         try {
             db.collection("produits").find().toArray((err, documents) => {
+                res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(documents));
+                
             });
         } catch(e) {
             console.log("Erreur sur /produits : " + e);
