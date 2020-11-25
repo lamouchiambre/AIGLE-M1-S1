@@ -21,10 +21,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class exo9_tam {
+public class exo9_1_tam {
 	private static final String INPUT_PATH = "input-tam/";
 	private static final String OUTPUT_PATH = "output/exo9-";
-	private static final Logger LOG = Logger.getLogger(exo9_tam.class.getName());
+	private static final Logger LOG = Logger.getLogger(exo9_1_tam.class.getName());
 	private static int compt = 0;
 
 	static {
