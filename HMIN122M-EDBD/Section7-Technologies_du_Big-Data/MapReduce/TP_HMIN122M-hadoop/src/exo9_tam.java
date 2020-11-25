@@ -10,7 +10,7 @@ import java.util.logging.SimpleFormatter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 //import org.apache.hadoop.io.DoubleWritable;
-//import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -43,7 +43,8 @@ public class exo9_tam {
 	// Plus précisément, donner le nombre de (bus ou trams) pour chaque heure et ligne. 
 	// Exemple : <Ligne 1, 17h, 30> (lire : à 17h, passent 30 tram de la ligne 1) 
 	
-	public static class Map extends Mapper<LongWritable, Text, Text, Text> {
+	public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
+		private final static IntWritable one = new IntWritable(1);
 		private final static String emptyWords[] = { "" };
 		
 		@Override
@@ -53,26 +54,35 @@ public class exo9_tam {
 				String line = value.toString(); // pour chaque ligne appel a map
 				String[] words = line.split(";"); // tableau de mots
 			
-				String time = words[5].substring(0, 2);
-				String ligne = words[2];
+				String time = words[7].substring(0, 2);
+				String ligne = words[4];
+				
 				if (Arrays.equals(words, emptyWords))
 					return;
 				
-	
-				LOG.info(line);
-
-				context.write(new Text(time ), new Text());
+				//LOG.info(words[3].getClass().getName());
+				if (words[3].equals("OCCITANIE")) {
+					LOG.info(words[3]);
+					context.write(new Text(ligne + " " + time), one);	
+				}
 			}
 		}
 	}
 
-	public static class Reduce extends Reducer<Text, Text, Text, Text> {
+	public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		@Override
-		public void reduce(Text key, Iterable<Text> values, Context context)
+		public void reduce(Text key, Iterable<IntWritable> values, Context context)
 				throws IOException, InterruptedException {
 			
-//			context.write(new Text(key), null);
+			int sum = 0;
+				
+			for (IntWritable val : values) {
+//				LOG.info("test");
+				sum += val.get();
+			}
+				
+			context.write(new Text("ligne " + key), new IntWritable(sum));
 		}
 	}
 
@@ -89,7 +99,7 @@ public class exo9_tam {
 		job.setMapperClass(Map.class);
 		job.setReducerClass(Reduce.class);
 
-		job.setOutputValueClass(Text.class); 
+		job.setOutputValueClass(IntWritable.class); 
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
