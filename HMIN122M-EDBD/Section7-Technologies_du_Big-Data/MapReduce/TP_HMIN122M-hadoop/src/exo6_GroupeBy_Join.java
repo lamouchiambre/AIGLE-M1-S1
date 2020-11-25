@@ -9,8 +9,8 @@ import java.util.logging.SimpleFormatter;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
+//import org.apache.hadoop.io.DoubleWritable;
+//import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -59,13 +59,11 @@ public class exo6_GroupeBy_Join {
 				// ORDERS
 				String custkey = words[1];
 				String totalprice = words[3];
-				LOG.info(custkey + " " + totalprice);
 				context.write(new Text(custkey), new Text("O" + totalprice));
 			} else {
 				// CUSTOMERS
 				String custkey = words[0];
 				String name = words[1];
-				LOG.info(custkey + " " + name);
 				context.write(new Text(custkey), new Text("C" + name));
 			}
 		}
@@ -79,36 +77,25 @@ public class exo6_GroupeBy_Join {
 
 			ArrayList<String> values_copy = new ArrayList<String>();
 			double sum = 0.0;
-			String result = "";
-			String name = "";
 
-			
 			for (Text val : values) {
 				values_copy.add(val.toString());
 			}
 			
 			for (String a : values_copy) {
-				
+				sum = 0.0;
 				for (String b : values_copy) {
-					
 					if (a.charAt(0) == 'C' && b.charAt(0) == 'O' ) {
 						a = a.substring(1);
 						b = b.substring(1);
-//						LOG.info(b);
-						name = a;
-//						LOG.info(b.substring(1));
-//						double tmp = Double.parseDouble(b);
 						sum += Double.parseDouble(b);
-//						LOG.info(String.valueOf(tmp));
-//						LOG.info(String.valueOf(sum));
-						
-						// Name + TotalPrice
-						result = a.substring(1) + " " + Double.parseDouble(b.substring(1));
-				        context.write(key, new Text(result));		
 					}
-					
 				}	
-							 
+				if (sum != 0.0) {
+					LOG.info("key: " + key.toString());
+					LOG.info("result: "+ a + " " + sum);
+		        	context.write(key, new Text(a + " " + sum));
+				}
 			}	
 		}
 	}
