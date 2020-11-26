@@ -21,9 +21,9 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class exo9_1_tam {
+public class exo9_3_tam {
 	private static final String INPUT_PATH = "input-tam/";
-	private static final String OUTPUT_PATH = "output/exo9-";
+	private static final String OUTPUT_PATH = "output/exo9-3-";
 	private static final Logger LOG = Logger.getLogger(exo9_1_tam.class.getName());
 	private static int compt = 0;
 
@@ -39,9 +39,12 @@ public class exo9_1_tam {
 		}
 	}
 	
-	// Donner un aperçu des trams et bus de la station OCCITANIE. 
-	// Plus précisément, donner le nombre de (bus ou trams) pour chaque heure et ligne. 
-	// Exemple : <Ligne 1, 17h, 30> (lire : à 17h, passent 30 tram de la ligne 1) 
+	// Pour chaque station et chaque heure, afficher une information X_tram 
+	// correspondant au trafic des trams, avec X_tram="faible" si au plus 8 trams sont prévus 
+	// (noter qu'une ligne de circulation a deux sens, donc au plus 4 trams par heure et sens), 
+	// X_tram="moyen" si entre 9 et 18 trams sont prévus, et X="fort" pour toute autre valeur. 
+	// Afficher la même information pour les bus. 
+	// Pour les stations où il a seulement des trams (ou des bus) il faut afficher une seule information.
 	
 	public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 		private final static IntWritable one = new IntWritable(1);
@@ -54,22 +57,25 @@ public class exo9_1_tam {
 				String line = value.toString(); // pour chaque ligne appel a map
 				String[] words = line.split(";"); // tableau de mots
 			
-				String time = words[7].substring(0, 2); // l'heure
-				String ligne = words[4]; // numéro de la ligne
+				String time = words[7].substring(0, 2);
+				int ligne = Integer.parseInt(words[4]);
+				String station = words[3];
 				
 				if (Arrays.equals(words, emptyWords))
 					return;
 				
 				//LOG.info(words[3].getClass().getName());
-				if (words[3].equals("OCCITANIE")) {
-//					LOG.info(words[3]);
-					context.write(new Text(ligne + " " + time), one);	
+				if (ligne > 0 && ligne < 5) {
+					LOG.info(words[3]);
+					context.write(new Text(station + " " + time + " "+ "TRAM"), one);	
+				}else{
+					context.write(new Text(station + " " + time + " "+ "BUS"), one);
 				}
 			}
 		}
 	}
 
-	public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+	public static class Reduce extends Reducer<Text, IntWritable, Text, Text> {
 
 		@Override
 		public void reduce(Text key, Iterable<IntWritable> values, Context context)
@@ -81,8 +87,18 @@ public class exo9_1_tam {
 //				LOG.info("test");
 				sum += val.get();
 			}
+			String densitee = "";
+			if(sum <9){
+				densitee = "FAIBLE";
+			}else{
+				if (sum < 19){
+					densitee = "MOYEN";
+				}else{
+					densitee = "FORT";
+				}
+			}
 				
-			context.write(new Text("ligne " + key), new IntWritable(sum));
+			context.write(new Text(key), new Text(densitee));
 		}
 	}
 
@@ -94,7 +110,7 @@ public class exo9_1_tam {
 		Job job = new Job(conf, "Join");
 
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 
 		job.setMapperClass(Map.class);
 		job.setReducerClass(Reduce.class);

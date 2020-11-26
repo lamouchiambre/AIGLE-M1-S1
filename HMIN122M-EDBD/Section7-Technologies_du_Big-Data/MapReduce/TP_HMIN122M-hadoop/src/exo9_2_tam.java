@@ -21,10 +21,10 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-public class exo9_1_tam {
+public class exo9_2_tam {
 	private static final String INPUT_PATH = "input-tam/";
-	private static final String OUTPUT_PATH = "output/exo9-";
-	private static final Logger LOG = Logger.getLogger(exo9_1_tam.class.getName());
+	private static final String OUTPUT_PATH = "output/exo9-2-";
+	private static final Logger LOG = Logger.getLogger(exo9_2_tam.class.getName());
 	private static int compt = 0;
 
 	static {
@@ -39,9 +39,7 @@ public class exo9_1_tam {
 		}
 	}
 	
-	// Donner un aperçu des trams et bus de la station OCCITANIE. 
-	// Plus précisément, donner le nombre de (bus ou trams) pour chaque heure et ligne. 
-	// Exemple : <Ligne 1, 17h, 30> (lire : à 17h, passent 30 tram de la ligne 1) 
+	// Pour chaque station, donner le nombre de trams et bus par jour.
 	
 	public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 		private final static IntWritable one = new IntWritable(1);
@@ -54,17 +52,12 @@ public class exo9_1_tam {
 				String line = value.toString(); // pour chaque ligne appel a map
 				String[] words = line.split(";"); // tableau de mots
 			
-				String time = words[7].substring(0, 2); // l'heure
-				String ligne = words[4]; // numéro de la ligne
+				String station_name = words[3]; // station id
 				
 				if (Arrays.equals(words, emptyWords))
 					return;
 				
-				//LOG.info(words[3].getClass().getName());
-				if (words[3].equals("OCCITANIE")) {
-//					LOG.info(words[3]);
-					context.write(new Text(ligne + " " + time), one);	
-				}
+				context.write(new Text(station_name), one);
 			}
 		}
 	}
@@ -78,11 +71,10 @@ public class exo9_1_tam {
 			int sum = 0;
 				
 			for (IntWritable val : values) {
-//				LOG.info("test");
 				sum += val.get();
 			}
 				
-			context.write(new Text("ligne " + key), new IntWritable(sum));
+			context.write(new Text("Station " + key), new IntWritable(sum));
 		}
 	}
 
