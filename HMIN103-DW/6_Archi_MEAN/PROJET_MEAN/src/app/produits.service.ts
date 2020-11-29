@@ -1,33 +1,33 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+// import { Injectable } from '@angular/core';
+// import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
-export class ProduitsService {
+// @Injectable({ providedIn: 'root' })
+// export class ProduitsService {
 
-	private urlBase: string = 'http://localhost:8888/';
+// 	private urlBase: string = 'http://localhost:8888/';
 
-	constructor(private http: HttpClient) { }
+// 	constructor(private http: HttpClient) { }
 
-	getProduits(): Observable<any> {
+// 	getProduits(): Observable<any> {
 		
-		console.log("Dans le service ProduitsService avec " + this.urlBase + 'produits');
+// 		console.log("Dans le service ProduitsService avec " + this.urlBase + 'produits');
 	
-		return this.http.get(this.urlBase + 'produits');
-	}
+// 		return this.http.get(this.urlBase + 'produits');
+// 	}
 
-	getProduitsParCategorie(categorie): Observable<any> {
+// 	getProduitsParCategorie(categorie): Observable<any> {
 
-		console.log("Dans le service ProduitsService avec " + this.urlBase + 'produits/' + categorie);
+// 		console.log("Dans le service ProduitsService avec " + this.urlBase + 'produits/' + categorie);
 
-		return this.http.get(this.urlBase + 'produits/' + categorie);
-	}
+// 		return this.http.get(this.urlBase + 'produits/' + categorie);
+// 	}
 
-	getCategories(): Observable<any> {
+// 	getCategories(): Observable<any> {
 
-		console.log("Dans le service ProduitsService avec " + this.urlBase + 'categories');
+// 		console.log("Dans le service ProduitsService avec " + this.urlBase + 'categories');
 
-		return this.http.get(this.urlBase + 'categories');
-	} 
-}
+// 		return this.http.get(this.urlBase + 'categories');
+// 	} 
+// }

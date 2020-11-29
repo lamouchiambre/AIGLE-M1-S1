@@ -17,14 +17,26 @@ const url         = "mongodb://localhost:27017";
 MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
     let db = client.db("SUPERVENTES");
     
+    /* Pas de sélection */
+    app.get("/", (req, res) => {
+        console.log("/");
+        console.log("test pas de sélection");
+        try {
+            res.end(JSON.stringify("test"));
+        } catch(e) {
+            console.log("Erreur sur / : " + e);
+            res.end(JSON.stringify([]));
+        }
+    });
+
     /* Liste des produits */
     app.get("/produits", (req, res) => {
         console.log("/produits");
         try {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader("Access-Control-Allow-Origin", "*");
             db.collection("produits").find().toArray((err, documents) => {
-                res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify(documents));
-                
             });
         } catch(e) {
             console.log("Erreur sur /produits : " + e);
@@ -78,6 +90,10 @@ MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
             res.end(JSON.stringify({"resultat": 0, "message": e}));
         }
     });
+
+    app.post('/produit/ajout', (req, res) => {
+        
+    })
 });
 
 app.listen(8888);

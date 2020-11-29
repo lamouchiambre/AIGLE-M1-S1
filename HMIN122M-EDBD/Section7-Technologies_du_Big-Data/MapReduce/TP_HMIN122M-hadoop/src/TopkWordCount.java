@@ -29,6 +29,12 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
  * Dans cet exemple, nous avons défini Map et Reduce en dehors de notre classe principale.
  * Il se pose alors le problème du passage du paramètre 'k' dans notre reducer, car il n'est en effet plus possible de déclarer un paramètre k dans notre classe principale qui serait partagé avec ses classes internes ; c'est la que la Configuration du Job entre en jeu.
  */
+/*
+ - k valeur
+ - si k = 3 : r�cup�rer les 3 premi�re valeur
+ - l'ordre importe peu
+ - 
+*/
 
 // =========================================================================
 // MAPPER
