@@ -21,9 +21,9 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import java.util.List;
+//import java.util.List;
 //import java.util.Map;
-import java.util.HashMap;
+//import java.util.HashMap;
 
 public class exo9_4_tam {
 	private static final String INPUT_PATH = "input-tam/";

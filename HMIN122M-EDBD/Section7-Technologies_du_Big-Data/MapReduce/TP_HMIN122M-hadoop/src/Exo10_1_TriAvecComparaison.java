@@ -21,7 +21,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import java.lang.*;
+//import java.lang.*;
 
 
 // =========================================================================
@@ -33,7 +33,7 @@ import java.lang.*;
  */
 @SuppressWarnings("rawtypes")
 class InverseComparator<T extends WritableComparable> extends WritableComparator {
-	private static final Logger LOG = Logger.getLogger(TriAvecComparaison.class.getName());
+	private static final Logger LOG = Logger.getLogger(Exo10_1_TriAvecComparaison.class.getName());
 
 	public InverseComparator(Class<T> parameterClass) {
 		super(parameterClass, true);
@@ -47,7 +47,7 @@ class InverseComparator<T extends WritableComparable> extends WritableComparator
 	 *         x > 0 si a > b <br>
 	 *         x < 0 sinon
 	 */
-	@SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	@Override
 	public int compare(WritableComparable a, WritableComparable b) {
 		
@@ -94,76 +94,87 @@ class InverseComparator<T extends WritableComparable> extends WritableComparator
 			return a_day - b_day;
 		}
 	}
-//	
+}
+
+@SuppressWarnings("rawtypes")
+class InverseComparator2<T extends WritableComparable> extends WritableComparator {
+	private static final Logger LOG = Logger.getLogger(Exo10_1_TriAvecComparaison.class.getName());
+
+	public InverseComparator2(Class<T> parameterClass) {
+		super(parameterClass, true);
+	}
 //	@SuppressWarnings("unchecked")
-////	@Override
-//	public int compareInv(WritableComparable a, WritableComparable b) {
-//		
-////		LOG.info("a: " + a.toString());
-////		LOG.info("b: " + b.toString());
-//		// On inverse le retour de la méthode de comparaison du type
-//		String[] ac = a.toString().split("/");
-//		//date = val.toString().split("/");
-//		int a_day = Integer.parseInt(ac[2]);
-//		int a_month = Integer.parseInt(ac[1]);
-//		int a_year = Integer.parseInt(ac[0]);
-//		
-//		String[] bc = b.toString().split("/");
-//		int b_day = Integer.parseInt(bc[2]);
-//		int b_month = Integer.parseInt(bc[1]);
-//		int b_year = Integer.parseInt(bc[0]);
-//		
-//		if (a_year != b_year) { // a_year > b_year
-//			if (a_year - b_year < 0) {
-//				LOG.info(a.toString() + " < " + b.toString());
-//			} else if (a_year - b_year > 0) {
-//				LOG.info(a.toString() + " > " + b.toString());
-//			} else {
-//				LOG.info(a.toString() + " == " + b.toString());
-//			}
-//			return b_year - a_year;
-//		} else if (a_month != b_month) {
-//			if (a_month - b_month < 0) {
-//				LOG.info(a.toString() + " < " + b.toString());
-//			} else if (a_month - b_month > 0) {
-//				LOG.info(a.toString() + " > " + b.toString());
-//			} else {
-//				LOG.info(a.toString() + " == " + b.toString());
-//			}
-//			return b_month - a_month;
-//		} else {
-//			if (a_day - b_day < 0) {
-//				LOG.info(a.toString() + " < " + b.toString());
-//			} else if (a_day - b_day > 0) {
-//				LOG.info(a.toString() + " > " + b.toString());
-//			} else {
-//				LOG.info(a.toString() + " == " + b.toString());
-//			}
-//			return b_day - a_day;
-//		}
-//	}
+//	@Override
+	public int compare(WritableComparable a, WritableComparable b) {
+//		LOG.info("a: " + a.toString());
+//		LOG.info("b: " + b.toString());
+		// On inverse le retour de la méthode de comparaison du type
+		String[] ac = a.toString().split("/");
+		// date = val.toString().split("/");
+		int a_day = Integer.parseInt(ac[2]);
+		int a_month = Integer.parseInt(ac[1]);
+		int a_year = Integer.parseInt(ac[0]);
+		
+		String[] bc = b.toString().split("/");
+		int b_day = Integer.parseInt(bc[2]);
+		int b_month = Integer.parseInt(bc[1]);
+		int b_year = Integer.parseInt(bc[0]);
+		
+		if (a_year != b_year) { // a_year > b_year
+			if (a_year - b_year < 0) {
+				LOG.info(a.toString() + " < " + b.toString());
+			} else if (a_year - b_year > 0) {
+				LOG.info(a.toString() + " > " + b.toString());
+			} else {
+				LOG.info(a.toString() + " == " + b.toString());
+			}
+			return b_year - a_year;
+		} else if (a_month != b_month) {
+			if (a_month - b_month < 0) {
+				LOG.info(a.toString() + " < " + b.toString());
+			} else if (a_month - b_month > 0) {
+				LOG.info(a.toString() + " > " + b.toString());
+			} else {
+				LOG.info(a.toString() + " == " + b.toString());
+			}
+			return b_month - a_month;
+		} else {
+			if (a_day - b_day < 0) {
+				LOG.info(a.toString() + " < " + b.toString());
+			} else if (a_day - b_day > 0) {
+				LOG.info(a.toString() + " > " + b.toString());
+			} else {
+				LOG.info(a.toString() + " == " + b.toString());
+			}
+			return b_day - a_day;
+		}
+	}
 }
 
 /**
  * Inverseur de la comparaison du type Text.
  */
 class TextInverseComparator extends InverseComparator<Text> {
-
 	public TextInverseComparator() {
 		super(Text.class);
 	}
-	
 }
 
+
+class TextInverseComparator2 extends InverseComparator2<Text> {
+	public TextInverseComparator2() {
+		super(Text.class);
+	}
+}
 
 // =========================================================================
 // CLASSE MAIN
 // =========================================================================
 
-public class TriAvecComparaison {
+public class Exo10_1_TriAvecComparaison {
 	private static final String INPUT_PATH = "input-groupBy/";
 	private static final String OUTPUT_PATH = "output/9-TriAvecComparaison-";
-	private static final Logger LOG = Logger.getLogger(TriAvecComparaison.class.getName());
+	private static final Logger LOG = Logger.getLogger(Exo10_1_TriAvecComparaison.class.getName());
 	private static int compt = 0;
 
 	static {
@@ -213,20 +224,8 @@ public class TriAvecComparaison {
 	public static class Reduce extends Reducer<Text, IntWritable, Text, Text> {
 
 		public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-			// 1 10 11 12 2 3 4 5 6 7 8 9
-//			String[] date;
-//			Text dateT = new Text();
-//			for (Text val : values) {
-//				dateT = val;
-				//date = val.toString().split("/");
-				//String day = date[1];
-				//String month = date[0];
-				//String year = date[2];
-				
-//			}
-			context.write(key, new Text());
-			
-			
+			LOG.info("reduce");
+			context.write(key, new Text());		
 		}
 	}
 
@@ -244,8 +243,9 @@ public class TriAvecComparaison {
 		 * Affectation de la classe du comparateur au job.
 		 * Celui-ci sera appelé durant la phase de shuffle.
 		 */
+		
 //		job.setSortComparatorClass(TextInverseComparator.class);
-		job.setSortComparatorClass(TextInverseComparator.class);
+		job.setSortComparatorClass(TextInverseComparator2.class);
 		
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);

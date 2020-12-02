@@ -24,7 +24,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 public class exo9_3_tam {
 	private static final String INPUT_PATH = "input-tam/";
 	private static final String OUTPUT_PATH = "output/exo9-3-";
-	private static final Logger LOG = Logger.getLogger(exo9_1_tam.class.getName());
+	private static final Logger LOG = Logger.getLogger(exo9_3_tam.class.getName());
 	private static int compt = 0;
 
 	static {
@@ -81,6 +81,7 @@ public class exo9_3_tam {
 		public void reduce(Text key, Iterable<IntWritable> values, Context context)
 				throws IOException, InterruptedException {
 			
+			LOG.info("reduce");
 			int sum = 0;
 				
 			for (IntWritable val : values) {
