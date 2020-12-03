@@ -11,9 +11,12 @@ import java.util.logging.SimpleFormatter;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
+//import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+//import org.apache.hadoop.io.WritableComparable;
+//import org.apache.hadoop.io.WritableComparator;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -41,21 +44,29 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 // MAPPER*
 // =========================================================================
 
-class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
-	private final static IntWritable one = new IntWritable(1);
+class Map1 extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+//	private final static IntWritable one = new IntWritable(1);
 	private final static String emptyWords[] = { "" };
+	private static int compt = 0;
 
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		compt++;
 		String line = value.toString();
 
-		String[] words = line.split("\\s+");
+		String[] words = line.split(",");
 
 		if (Arrays.equals(words, emptyWords))
 			return;
-
-		for (String word : words)
-			context.write(new Text(word), one);
+		String mots = "";
+		if (compt != 1) {
+			//for (String word : words)
+			for (int i = 0 ; i < 20 ; i++) {
+				mots += (" "+ words[i]);
+			}
+			
+			context.write(new Text(mots), new DoubleWritable(Double.parseDouble(words[20])));
+		}
 	}
 }
 
@@ -63,14 +74,36 @@ class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 // REDUCER
 // =========================================================================
 
-class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+//Comparateur
+//@SuppressWarnings("rawtypes")
+//class Comparator1<T extends WritableComparable> extends WritableComparator {
+//	private static final Logger LOG = Logger.getLogger(TopkWordCount_1.class.getName());
+//	
+//	
+//	public Comparator1(Class<T> parameterClass) {
+//		super(parameterClass, true);
+//	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public int compare(WritableComparable a, WritableComparable b) {
+////		LOG.info("test");
+//		return a.compareTo(b);
+//	}
+//}
+//class TextComparator1 extends Comparator1<Text> {
+//	public TextComparator1() {
+//		super(Text.class);
+//	}
+//}
+
+class Reduce1 extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
 	/**
 	 * Map avec tri suivant l'ordre naturel de la clé (la clé représentant la fréquence d'un ou plusieurs mots).
 	 * Utilisé pour conserver les k mots les plus fréquents.
 	 * 
 	 * Il associe une fréquence à une liste de mots.
 	 */
-	private TreeMap<Integer, List<Text>> sortedWords = new TreeMap<>();
+	private TreeMap<Double, List<Text>> sortedWords = new TreeMap<>();
 	private int nbsortedWords = 0;
 	private int k;
 
@@ -84,11 +117,11 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 	}
 
 	@Override
-	public void reduce(Text key, Iterable<IntWritable> values, Context context)
+	public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 			throws IOException, InterruptedException {
-		int sum = 0;
+		double sum = 0.0;
 
-		for (IntWritable val : values)
+		for (DoubleWritable val : values)
 			sum += val.get();
 
 		// On copie car l'objet key reste le même entre chaque appel du reducer
@@ -106,7 +139,7 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		// Nombre de mots enregistrés atteint : on supprime le mot le moins fréquent (le premier dans sortedWords)
 		if (nbsortedWords == k) {
-			Integer firstKey = sortedWords.firstKey();
+			Double firstKey = sortedWords.firstKey();
 			List<Text> words = sortedWords.get(firstKey);
 			words.remove(words.size() - 1);
 
@@ -123,25 +156,25 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 	 */
 	@Override
 	public void cleanup(Context context) throws IOException, InterruptedException {
-		Integer[] nbofs = sortedWords.keySet().toArray(new Integer[0]); // les fréquences
+		Double[] nbofs = sortedWords.keySet().toArray(new Double[0]); // les fréquences
 
 		// Parcours en sens inverse pour obtenir un ordre descendant
 		int i = nbofs.length;
 
 		while (i-- != 0) {
-			Integer nbof = nbofs[i];
+			Double nbof = nbofs[i];
 
 			for (Text words : sortedWords.get(nbof)) {
-				context.write(words, new IntWritable(nbof));
+				context.write(words, new DoubleWritable(nbof));
 			}
 		}
 	}
 }
 
-public class TopkWordCount {
-	private static final String INPUT_PATH = "input-wordCount/";
-	private static final String OUTPUT_PATH = "output/TopkWordCount-";
-	private static final Logger LOG = Logger.getLogger(TopkWordCount.class.getName());
+public class TopkWordCount_1 {
+	private static final String INPUT_PATH = "input-groupBy/";
+	private static final String OUTPUT_PATH = "output/TopkWordCount1-";
+	private static final Logger LOG = Logger.getLogger(TopkWordCount_1.class.getName());
 
 	static {
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n%6$s");
@@ -184,12 +217,13 @@ public class TopkWordCount {
 		conf.setInt("k", k);
 
 		Job job = new Job(conf, "wordcount");
+//		job.setSortComparatorClass(TextComparator1.class);
 
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(DoubleWritable.class);
 
-		job.setMapperClass(Map.class);
-		job.setReducerClass(Reduce.class);
+		job.setMapperClass(Map1.class);
+		job.setReducerClass(Reduce1.class);
 
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);

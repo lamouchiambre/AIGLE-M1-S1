@@ -11,9 +11,12 @@ import java.util.logging.SimpleFormatter;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
+//import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+//import org.apache.hadoop.io.WritableComparable;
+//import org.apache.hadoop.io.WritableComparator;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -37,40 +40,97 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
  - 
 */
 
-// =========================================================================
-// MAPPER*
-// =========================================================================
+//Comparateur
+//@SuppressWarnings("rawtypes")
+//class Comparator1<T extends WritableComparable> extends WritableComparator {
+//	private static final Logger LOG = Logger.getLogger(TopkWordCount_1.class.getName());
+//	
+//	
+//	public Comparator1(Class<T> parameterClass) {
+//		super(parameterClass, true);
+//	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public int compare(WritableComparable a, WritableComparable b) {
+////		LOG.info("test");
+//		return a.compareTo(b);
+//	}
+//}
+//class TextComparator1 extends Comparator1<Text> {
+//	public TextComparator1() {
+//		super(Text.class);
+//	}
+//}
 
-class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
-	private final static IntWritable one = new IntWritable(1);
+// =========================================================================
+// Job A
+// =========================================================================
+class Map2A extends Mapper<LongWritable, Text, Text, DoubleWritable> {
 	private final static String emptyWords[] = { "" };
+	private static int compt = 0;
 
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		compt++;
 		String line = value.toString();
 
-		String[] words = line.split("\\s+");
+		String[] words = line.split(",");
 
 		if (Arrays.equals(words, emptyWords))
 			return;
 
-		for (String word : words)
-			context.write(new Text(word), one);
+		if (compt != 1) {
+			context.write(new Text(words[5] + " " + words[6] + ","), new DoubleWritable(Double.parseDouble(words[20])));
+		}
 	}
 }
 
-// =========================================================================
-// REDUCER
-// =========================================================================
+class Reduce2A extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+	
+	@Override
+	public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
+			throws IOException, InterruptedException {
+		double sum = 0.0;
 
-class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+		for (DoubleWritable val : values)
+			sum += val.get();
+
+		context.write(key, new DoubleWritable(sum));
+	}
+}
+
+
+//=========================================================================
+// Job B
+//=========================================================================
+class Map2B extends Mapper<LongWritable, Text, Text, DoubleWritable> {
+	private final static String emptyWords[] = { "" };
+	private static int compt = 0;
+
+	@Override
+	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		compt++;
+		String line = value.toString();
+
+		String[] words = line.split(",");
+
+		if (Arrays.equals(words, emptyWords))
+			return;
+		
+		if (compt != 1) {
+			context.write(new Text(words[0]), new DoubleWritable(Double.parseDouble(words[1])));
+		}
+	}
+}
+
+class Reduce2B extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
 	/**
 	 * Map avec tri suivant l'ordre naturel de la clé (la clé représentant la fréquence d'un ou plusieurs mots).
 	 * Utilisé pour conserver les k mots les plus fréquents.
 	 * 
 	 * Il associe une fréquence à une liste de mots.
 	 */
-	private TreeMap<Integer, List<Text>> sortedWords = new TreeMap<>();
+	private TreeMap<Double, List<Text>> sortedWords = new TreeMap<>();
 	private int nbsortedWords = 0;
 	private int k;
 
@@ -84,11 +144,11 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 	}
 
 	@Override
-	public void reduce(Text key, Iterable<IntWritable> values, Context context)
+	public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
 			throws IOException, InterruptedException {
-		int sum = 0;
+		double sum = 0.0;
 
-		for (IntWritable val : values)
+		for (DoubleWritable val : values)
 			sum += val.get();
 
 		// On copie car l'objet key reste le même entre chaque appel du reducer
@@ -106,7 +166,7 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		// Nombre de mots enregistrés atteint : on supprime le mot le moins fréquent (le premier dans sortedWords)
 		if (nbsortedWords == k) {
-			Integer firstKey = sortedWords.firstKey();
+			Double firstKey = sortedWords.firstKey();
 			List<Text> words = sortedWords.get(firstKey);
 			words.remove(words.size() - 1);
 
@@ -123,25 +183,26 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 	 */
 	@Override
 	public void cleanup(Context context) throws IOException, InterruptedException {
-		Integer[] nbofs = sortedWords.keySet().toArray(new Integer[0]); // les fréquences
+		Double[] nbofs = sortedWords.keySet().toArray(new Double[0]); // les fréquences
 
 		// Parcours en sens inverse pour obtenir un ordre descendant
 		int i = nbofs.length;
 
 		while (i-- != 0) {
-			Integer nbof = nbofs[i];
+			Double nbof = nbofs[i];
 
 			for (Text words : sortedWords.get(nbof)) {
-				context.write(words, new IntWritable(nbof));
+				context.write(words, new DoubleWritable(nbof));
 			}
 		}
 	}
 }
 
-public class TopkWordCount {
-	private static final String INPUT_PATH = "input-wordCount/";
-	private static final String OUTPUT_PATH = "output/TopkWordCount-";
-	private static final Logger LOG = Logger.getLogger(TopkWordCount.class.getName());
+public class TopkWordCount_2 {
+	private static final String INPUT_PATH = "input-groupBy/";
+	private static final String OUTPUT_PATH = "output/TopkWordCount2A-";
+	private static final String OUTPUT_PATH_B = "output/TopkWordCount2B-";
+	private static final Logger LOG = Logger.getLogger(TopkWordCount_2.class.getName());
 
 	static {
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n%6$s");
@@ -183,20 +244,37 @@ public class TopkWordCount {
 		
 		conf.setInt("k", k);
 
-		Job job = new Job(conf, "wordcount");
+		Job jobA = new Job(conf, "A");
 
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		jobA.setOutputKeyClass(Text.class);
+		jobA.setOutputValueClass(DoubleWritable.class);
 
-		job.setMapperClass(Map.class);
-		job.setReducerClass(Reduce.class);
+		jobA.setMapperClass(Map2A.class);
+		jobA.setReducerClass(Reduce2A.class);
 
-		job.setInputFormatClass(TextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
+		jobA.setInputFormatClass(TextInputFormat.class);
+		jobA.setOutputFormatClass(TextOutputFormat.class);
 
-		FileInputFormat.addInputPath(job, new Path(INPUT_PATH));
-		FileOutputFormat.setOutputPath(job, new Path(OUTPUT_PATH + Instant.now().getEpochSecond()));
+		long instant = Instant.now().getEpochSecond();
+		FileInputFormat.addInputPath(jobA, new Path(INPUT_PATH));
+		FileOutputFormat.setOutputPath(jobA, new Path(OUTPUT_PATH + instant));
 
-		job.waitForCompletion(true);
+		jobA.waitForCompletion(true);
+		
+		Job jobB = new Job(conf, "B");
+
+		jobB.setOutputKeyClass(Text.class);
+		jobB.setOutputValueClass(DoubleWritable.class);
+
+		jobB.setMapperClass(Map2B.class);
+		jobB.setReducerClass(Reduce2B.class);
+
+		jobB.setInputFormatClass(TextInputFormat.class);
+		jobB.setOutputFormatClass(TextOutputFormat.class);
+
+		FileInputFormat.addInputPath(jobB,  new Path(OUTPUT_PATH + instant));
+		FileOutputFormat.setOutputPath(jobB, new Path(OUTPUT_PATH_B + instant));
+
+		jobB.waitForCompletion(true);
 	}
 }

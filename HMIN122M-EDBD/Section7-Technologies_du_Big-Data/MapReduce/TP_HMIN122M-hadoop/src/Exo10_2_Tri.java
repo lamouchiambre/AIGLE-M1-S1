@@ -13,6 +13,8 @@ import org.apache.hadoop.fs.Path;
 //import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.WritableComparable;
+import org.apache.hadoop.io.WritableComparator;
 //import org.apache.hadoop.io.WritableComparable;
 //import org.apache.hadoop.io.WritableComparator;
 import org.apache.hadoop.mapreduce.Job;
@@ -33,11 +35,28 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
  * Job B : Trier par le profit généré
  */
 
+// Comparateur
+@SuppressWarnings("rawtypes")
+class Comparator<T extends WritableComparable> extends WritableComparator {
+
+	public Comparator(Class<T> parameterClass) {
+		super(parameterClass, true);
+	}
+	@Override
+	public int compare(WritableComparable a, WritableComparable b) {
+		return (int) (Double.parseDouble(a.toString()) - Double.parseDouble(b.toString()));
+	}
+}
+class TextComparator extends Comparator<Text> {
+	public TextComparator() {
+		super(Text.class);
+	}
+}
+
 // Main class
 public class Exo10_2_Tri {
 	private static final String INPUT_PATH = "input-groupBy/";
-	private static final String OUTPUT_PATH = "output-10-2-Tri-JobA/";
-//	private static final String INPUT_PATH_B = "output-10-2-Tri-JobA/";
+	private static final String OUTPUT_PATH = "output/10-2-Tri-JobA/";
 	private static final String OUTPUT_PATH_B = "output/10-2-Tri-JobB/";
 	private static final Logger LOG = Logger.getLogger(Exo10_2_Tri.class.getName());
 	private static int compt = 0;
@@ -118,7 +137,7 @@ public class Exo10_2_Tri {
 			}
 		}
 	}
-
+	
 	// Main
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
@@ -138,29 +157,30 @@ public class Exo10_2_Tri {
 		job.setInputFormatClass(TextInputFormat.class);
 		job.setOutputFormatClass(TextOutputFormat.class);
 
+		long instant = Instant.now().getEpochSecond();
 		FileInputFormat.addInputPath(job, new Path(INPUT_PATH));
-		Path output_jobA = new Path(OUTPUT_PATH + Instant.now().getEpochSecond());
-		FileOutputFormat.setOutputPath(job, output_jobA);
+		FileOutputFormat.setOutputPath(job, new Path(OUTPUT_PATH + instant));
 
 		job.waitForCompletion(true);
 		
 		// Job B
-//		Job jobB = new Job(conf, "B");
-//		
-//		jobB.setOutputKeyClass(Text.class);
-//		jobB.setOutputValueClass(Text.class);
-//
-//		jobB.setMapperClass(Map.class);
-//		jobB.setReducerClass(Reduce.class);
-//
-//		jobB.setOutputValueClass(Text.class); 
-//		
-//		jobB.setInputFormatClass(TextInputFormat.class);
-//		jobB.setOutputFormatClass(TextOutputFormat.class);
-//
-//		FileInputFormat.addInputPath(jobB, new Path(OUTPUT_PATH_B));
-//		FileOutputFormat.setOutputPath(jobB, new Path(OUTPUT_PATH_B + Instant.now().getEpochSecond()));
-//
-//		jobB.waitForCompletion(true);
+		Job jobB = new Job(conf, "B");
+		jobB.setSortComparatorClass(TextComparator.class);
+		
+		jobB.setOutputKeyClass(Text.class);
+		jobB.setOutputValueClass(Text.class);
+
+		jobB.setMapperClass(MapB.class);
+		jobB.setReducerClass(ReduceB.class);
+
+		jobB.setOutputValueClass(Text.class); 
+		
+		jobB.setInputFormatClass(TextInputFormat.class);
+		jobB.setOutputFormatClass(TextOutputFormat.class);
+
+		FileInputFormat.addInputPath(jobB, new Path(OUTPUT_PATH + instant));
+		FileOutputFormat.setOutputPath(jobB, new Path(OUTPUT_PATH_B + instant));
+
+		jobB.waitForCompletion(true);
 	}
 }

@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
@@ -11,59 +12,81 @@ import java.util.logging.SimpleFormatter;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+//import org.apache.hadoop.io.DoubleWritable;
+//import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+//import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-
-/*
- * Jusqu'à présent nous avons défini nos mappers et reducers comme des classes internes à notre classe principale.
- * Dans des applications réelles de map-reduce cela ne sera généralement pas le cas, les classes seront probablement localisées dans d'autres fichiers.
- * Dans cet exemple, nous avons défini Map et Reduce en dehors de notre classe principale.
- * Il se pose alors le problème du passage du paramètre 'k' dans notre reducer, car il n'est en effet plus possible de déclarer un paramètre k dans notre 
- * classe principale qui serait partagé avec ses classes internes ; c'est là que la Configuration du Job entre en jeu.
- */
-/*
- - k valeur
- - si k = 3 : récupérer les 3 première valeur
- - l'ordre importe peu
- - 
-*/
-
-// =========================================================================
-// MAPPER*
-// =========================================================================
-
-class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
+// Job A
+class Map12_3A extends Mapper<LongWritable, Text, Text, IntWritable> {
 	private final static IntWritable one = new IntWritable(1);
 	private final static String emptyWords[] = { "" };
-
+	private static int compt = 0;
+		
 	@Override
 	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-		String line = value.toString();
-
-		String[] words = line.split("\\s+");
-
-		if (Arrays.equals(words, emptyWords))
-			return;
-
-		for (String word : words)
-			context.write(new Text(word), one);
+		compt++;
+		if (compt != 1) {
+			String line = value.toString(); // pour chaque ligne appel a map
+			String[] words = line.split(";"); // tableau de mots
+				
+			String station = words[3]; // nom de la station
+				
+			if (Arrays.equals(words, emptyWords))
+				return;
+			
+			context.write(new Text(station), one);
+		}
 	}
 }
 
-// =========================================================================
-// REDUCER
-// =========================================================================
+class Reduce12_3A extends Reducer<Text, IntWritable, Text, Text> {
 
-class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+	@Override
+	public void reduce(Text key, Iterable<IntWritable> values, Context context)	throws IOException, InterruptedException {
+			
+		int sum = 0;
+				
+		for (IntWritable val : values) {
+			sum += val.get();
+		}
+				
+		context.write(new Text(key + ","), new Text(String.valueOf(sum)));
+	}
+}
+// Fin Job A
+	
+// Job B
+class Map12_3B extends Mapper<LongWritable, Text, Text, IntWritable> {
+	private final static String emptyWords[] = { "" };
+	private static int compt = 0;
+
+	@Override
+	public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		compt++;
+		String line = value.toString();
+		String[] words = line.split(",");
+
+		if (Arrays.equals(words, emptyWords))
+			return;
+			
+		if (compt != 1) {
+			context.write(new Text(words[0]), new IntWritable(Integer.parseInt(words[1].substring(1))));
+		}
+	}
+}
+
+class Reduce12_3B extends Reducer<Text, IntWritable, Text, IntWritable> {
+//	private static final Logger LOG = Logger.getLogger(Exo12_3_TAM.class.getName());
 	/**
 	 * Map avec tri suivant l'ordre naturel de la clé (la clé représentant la fréquence d'un ou plusieurs mots).
 	 * Utilisé pour conserver les k mots les plus fréquents.
@@ -88,8 +111,10 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 			throws IOException, InterruptedException {
 		int sum = 0;
 
-		for (IntWritable val : values)
+		for (IntWritable val : values) {
+			//LOG.info(val.toString());
 			sum += val.get();
+		}
 
 		// On copie car l'objet key reste le même entre chaque appel du reducer
 		Text keyCopy = new Text(key);
@@ -106,9 +131,10 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 
 		// Nombre de mots enregistrés atteint : on supprime le mot le moins fréquent (le premier dans sortedWords)
 		if (nbsortedWords == k) {
-			Integer firstKey = sortedWords.firstKey();
+			int firstKey = sortedWords.firstKey();
 			List<Text> words = sortedWords.get(firstKey);
 			words.remove(words.size() - 1);
+//			LOG.info("entrer "+ k);
 
 			if (words.isEmpty())
 				sortedWords.remove(firstKey);
@@ -129,19 +155,22 @@ class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
 		int i = nbofs.length;
 
 		while (i-- != 0) {
-			Integer nbof = nbofs[i];
-
+			int nbof = nbofs[i];
+			
 			for (Text words : sortedWords.get(nbof)) {
+				//LOG.info("ecrit");
 				context.write(words, new IntWritable(nbof));
 			}
 		}
 	}
 }
-
-public class TopkWordCount {
-	private static final String INPUT_PATH = "input-wordCount/";
-	private static final String OUTPUT_PATH = "output/TopkWordCount-";
-	private static final Logger LOG = Logger.getLogger(TopkWordCount.class.getName());
+// Fin Job B
+	
+public class Exo12_3_TAM {
+	private static final String INPUT_PATH_A = "input-tam/";
+	private static final String OUTPUT_PATH_A = "output/exo12-3A-";
+	private static final String OUTPUT_PATH_B = "output/exo12-3B-";
+	private static final Logger LOG = Logger.getLogger(exo9_1_tam.class.getName());
 
 	static {
 		System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s%n%6$s");
@@ -154,10 +183,7 @@ public class TopkWordCount {
 			System.exit(1);
 		}
 	}
-
-	/**
-	 * Ce programme permet le passage d'une valeur k en argument de la ligne de commande.
-	 */
+		
 	public static void main(String[] args) throws Exception {
 		// Borne 'k' du topk
 		int k = 10;
@@ -177,26 +203,45 @@ public class TopkWordCount {
 			LOG.severe("Error for the k argument: " + e.getMessage());
 			System.exit(1);
 		}
-
+		
 		Configuration conf = new Configuration();
 		conf.set("fs.file.impl", "com.conga.services.hadoop.patch.HADOOP_7682.WinLocalFileSystem");
 		
 		conf.setInt("k", k);
+		
+		// Job A
+		Job jobA = new Job(conf, "JobA");
 
-		Job job = new Job(conf, "wordcount");
+		jobA.setOutputKeyClass(Text.class);
+		jobA.setOutputValueClass(IntWritable.class);
 
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		jobA.setMapperClass(Map12_3A.class);
+		jobA.setReducerClass(Reduce12_3A.class);
 
-		job.setMapperClass(Map.class);
-		job.setReducerClass(Reduce.class);
+		jobA.setInputFormatClass(TextInputFormat.class);
+		jobA.setOutputFormatClass(TextOutputFormat.class);
 
-		job.setInputFormatClass(TextInputFormat.class);
-		job.setOutputFormatClass(TextOutputFormat.class);
+		long instant = Instant.now().getEpochSecond();
+		FileInputFormat.addInputPath(jobA, new Path(INPUT_PATH_A));
+		FileOutputFormat.setOutputPath(jobA, new Path(OUTPUT_PATH_A + instant));
 
-		FileInputFormat.addInputPath(job, new Path(INPUT_PATH));
-		FileOutputFormat.setOutputPath(job, new Path(OUTPUT_PATH + Instant.now().getEpochSecond()));
+		jobA.waitForCompletion(true);
+		
+		// Job B
+		Job jobB = new Job(conf, "JobB");
 
-		job.waitForCompletion(true);
+		jobB.setOutputKeyClass(Text.class);
+		jobB.setOutputValueClass(IntWritable.class);
+
+		jobB.setMapperClass(Map12_3B.class);
+		jobB.setReducerClass(Reduce12_3B.class);
+
+		jobB.setInputFormatClass(TextInputFormat.class);
+		jobB.setOutputFormatClass(TextOutputFormat.class);
+
+		FileInputFormat.addInputPath(jobB, new Path(OUTPUT_PATH_A + instant));
+		FileOutputFormat.setOutputPath(jobB, new Path(OUTPUT_PATH_B + instant));
+
+		jobB.waitForCompletion(true);
 	}
 }
